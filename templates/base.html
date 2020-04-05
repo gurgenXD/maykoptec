@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        {% include '__head.html' %}
+
+        {% block title %}
+        {% endblock %}
+    </head>
+    <body>
+        {% include '__header.html' %}
+
+        {% block content %}
+        {% endblock %}
+
+        <div class="text-center text-muted position-fixed scroll-to-top">
+            <i class="fas fa-angle-up fa-2x"></i>
+        </div>
+
+        <div class="modal fade" id="SignInModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content overflow-hidden shadow">
+                    <div class="modal-header">
+                        <h5 class="modal-title m-0 font-weight-normal">Войти в личный кабинет</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <ul class="nav nav-tabs mx-n3" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="SNILS-tab" data-toggle="tab" href="#SNILS-pane" role="tab" aria-controls="SNILS-pane" aria-selected="true">Физ. лицо</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="OGRN-tab" data-toggle="tab" href="#OGRN-pane" role="tab" aria-controls="OGRN-pane" aria-selected="false">Юр. лицо</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="OGRNIP-tab" data-toggle="tab" href="#OGRNIP-pane" role="tab" aria-controls="OGRNIP-pane" aria-selected="false">ИП</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content pt-4">
+                            <div class="tab-pane fade show active" id="SNILS-pane" role="tabpanel" aria-labelledby="SNILS-tab">
+                                <form class="needs-validation login-form" novalidate method="POST" action="{% url 'signin' %}">
+                                    {% csrf_token %}
+                                    <div class="form-label-group smaller mb-4">
+                                        {{ is_form.username }}
+                                        <label class="bg-white">СНИЛС</label>
+
+                                        <div class="invalid-feedback">
+                                            Это обязательное поле
+                                        </div>
+                                    </div>
+
+                                    <div class="form-label-group smaller mb-4">
+                                        {{ is_form.password }}
+                                        <label class="bg-white">Пароль</label>
+
+                                        <div class="invalid-feedback">
+                                            Это обязательное поле
+                                        </div>
+                                    </div>
+
+                                    {% include '__recaptcha.html' %}
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <button class="btn btn-primary d-block px-5" type="submit">Войти</button>
+                                        <a href="{% url 'password_reset' %}" title="" class="text-muted smaller"><u>Не помню пароль</u></a>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane fade" id="OGRN-pane" role="tabpanel" aria-labelledby="OGRN-tab">
+                                <form class="needs-validation login-form" novalidate method="POST" action="{% url 'signin' %}">
+                                    {% csrf_token %}
+                                    <div class="form-label-group smaller mb-4">
+                                        {{ es_form.username }}
+                                        <label class="bg-white">ОГРН</label>
+
+                                        <div class="invalid-feedback">
+                                            Это обязательное поле
+                                        </div>
+                                    </div>
+
+                                    <div class="form-label-group smaller mb-4">
+                                        {{ es_form.password }}
+                                        <label class="bg-white">Пароль</label>
+
+                                        <div class="invalid-feedback">
+                                            Это обязательное поле
+                                        </div>
+                                    </div>
+
+                                    {% include '__recaptcha.html' %}
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <button class="btn btn-primary d-block px-5" type="submit">Войти</button>
+                                        <a href="{% url 'password_reset' %}" title="" class="text-muted smaller"><u>Не помню пароль</u></a>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane fade" id="OGRNIP-pane" role="tabpanel" aria-labelledby="OGRNIP-tab">
+                                <form class="needs-validation login-form" novalidate method="POST" action="{% url 'signin' %}">
+                                    {% csrf_token %}
+                                    <div class="form-label-group smaller mb-4">
+                                        {{ bs_form.username }}
+                                        <label class="bg-white">ОГРНИП</label>
+
+                                        <div class="invalid-feedback">
+                                            Это обязательное поле
+                                        </div>
+                                    </div>
+
+                                    <div class="form-label-group smaller mb-4">
+                                        {{ bs_form.password }}
+                                        <label class="bg-white">Пароль</label>
+
+                                        <div class="invalid-feedback">
+                                            Это обязательное поле
+                                        </div>
+                                    </div>
+
+                                    {% include '__recaptcha.html' %}
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <button class="btn btn-primary d-block px-5" type="submit">Войти</button>
+                                        <a href="{% url 'password_reset' %}" title="" class="text-muted smaller"><u>Не помню пароль</u></a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div id="login-alert"></div>
+                        
+                    </div>
+
+                    <div class="modal-footer">
+                        <p class="text-muted small mb-3">Если у вас ещё нет учётной записи, то необходимо пройти регистрацию</p>
+                        <a href="{% url 'signup' %}" title="" class="btn btn-primary btn-lg w-100 m-0">Зарегистрироваться</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {% include '__photoswipe.html' %}
+
+        {% include '__footer.html' %}
+        {% include '__scripts.html' %}       
+    </body>
+</html>

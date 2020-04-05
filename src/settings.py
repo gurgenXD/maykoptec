@@ -41,12 +41,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
+    'mptt',
+    'django_mptt_admin',
 
     'news',
     'contacts',
     'feedback',
     'core',
     'users',
+    'pages',
+    'documents',
+    'apps',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.context_info',
             ],
         },
     },
@@ -125,7 +131,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

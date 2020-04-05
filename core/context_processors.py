@@ -1,32 +1,24 @@
+from users.forms import BusinessManSignInForm, IndividualSignInForm, EntitySignInForm
 from pages.models import Page
-from math import ceil
-from contacts.models import Social, Address, Phone
+from core.models import Index
 
 
 def context_info(request):
-    pages = Page.objects.filter(is_active=True, parent=None)
-    footer_pages = Page.objects.filter(in_footer=True)
-    main_phones = Phone.objects.all()[:2]
-    address = Address.objects.first()
+    bs_form = BusinessManSignInForm()
+    is_form = IndividualSignInForm()
+    es_form = EntitySignInForm()
 
-    per_group = ceil(len(footer_pages) / 3)
-    socials = Social.objects.all()
+    menu = Page.objects.filter(is_active=True)
+    main_phone = Index.objects.first().phone
 
-    first_group = footer_pages[:per_group]
-    second_group = footer_pages[per_group:per_group*2]
-    third_group = footer_pages[per_group*2:]
-
-    is_lo = request.session.get('is_lo')
+    footer_menu = Page.objects.filter(in_footer=True)
 
     context = {
-        'pages': pages,
-        'first_group': first_group,
-        'second_group': second_group,
-        'third_group': third_group,
-        'socials': socials,
-        'main_phones': main_phones,
-        'address': address,
-        'footer_pages': footer_pages,
-        'is_lo': is_lo,
+        'bs_form': bs_form,
+        'is_form': is_form,
+        'es_form': es_form,
+        'menu': menu,
+        'main_phone': main_phone,
+        'footer_menu': footer_menu,
     }
     return context

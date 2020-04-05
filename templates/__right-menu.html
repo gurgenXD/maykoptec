@@ -1,0 +1,35 @@
+{% load static %}
+
+<div class="col-lg-4">
+    <div class="sidebar">
+        <div class="function-card bg-white rounded px-4 py-4 mb-4 d-flex">
+            <div>
+                <img src="{% static 'images/function-card-icon-1.png' %}" alt="" class="mr-3">
+            </div>
+            <div>
+                <a href="{% url 'activity_area' %}" title="" class="d-block stretched-link h6 text-dark mb-1">Зона деятельности</a>
+                <p class="mb-0 small text-muted">Узнайте о возможности подключения вашего дома</p>
+            </div>
+        </div>
+
+        <div class="function-card bg-white rounded px-4 py-4 mb-4 d-flex">
+            <div>
+                <img src="{% static 'images/function-card-icon-2.png' %}" alt="" class="mr-3">
+            </div>
+            <div>
+                <a href="{% url 'feedback' %}" title="" class="d-block stretched-link h6 text-dark mb-1">Интернет-приёмная</a>
+                <p class="mb-0 small text-muted">Задайте вопрос о деятельности "Майкопская ТЭЦ"</p>
+            </div>
+        </div>
+
+        <div class="function-card bg-white rounded px-4 py-4 mb-4 d-flex">
+            <div>
+                <img src="{% static 'images/function-card-icon-3.png' %}" alt="" class="mr-3">
+            </div>
+            <div>
+                <a href="{% url 'calc' %}" title="" class="d-block stretched-link h6 text-dark mb-1">Калькулятор ТП</a>
+                <p class="mb-0 small text-muted">Рассчитайте стоимость подключения вашего объекта к сетям</p>
+            </div>
+        </div>
+    </div>
+</div>

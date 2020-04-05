@@ -21,3 +21,15 @@ class ContactsView(View):
             'map_code': map_code,
         }
         return render(request, 'contacts/contacts.html', context)
+
+
+class ActivityAreaView(View):
+    def get(self, request):
+        areas = ActivityArea.objects.all()
+        map_code = MapCode.objects.filter(map_type='area').first()
+
+        context = {
+            'areas': areas,
+            'map_code': map_code,
+        }
+        return render(request, 'contacts/activity-area.html', context)

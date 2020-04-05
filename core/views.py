@@ -1,31 +1,46 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views import View
-# from directions.models import Direction
-# from news.models import News
-# from feedback.forms import FeedBackForm
-# from core.models import Index
+from news.models import News
+from core.models import Index
+from contacts.models import *
 
 
 class IndexView(View):
     def get(self, request):
-        # directions = Direction.objects.filter(is_active=True)[:3]
-        # news = News.objects.filter(is_active=True)[:5]
-        # feedback_form = FeedBackForm()
-        # index = Index.objects.first()
+        news = News.objects.filter(is_active=True)[:3]
+        index = Index.objects.first()
+
+        addresses = Address.objects.all()
+        phones_customers = Phone.objects.filter(phone_type='customers')
+        phones_dispatch = Phone.objects.filter(phone_type='dispatch')
+        emails = Email.objects.all()
+        schedule = Schedule.objects.all()
+        map_code = MapCode.objects.filter(map_type='contacts').first()
+
+        areas = ActivityArea.objects.all()
+        area_code = MapCode.objects.filter(map_type='area').first()
 
         context = {
-            # 'directions': directions,
-            # 'news': news,
-            # 'feedback_form': feedback_form,
-            # 'index': index,
+            'news': news,
+            'index': index,
+            'addresses': addresses,
+            'phones_customers': phones_customers,
+            'phones_dispatch': phones_dispatch,
+            'emails': emails,
+            'schedule': schedule,
+            'map_code': map_code,
+            'areas': areas,
+            'area_code': area_code,
         }
         return render(request, 'core/index.html', context)
 
 
-# class ChangeView(View):
-#     def get(self, request):
-#         is_lo = request.session.get('is_lo')
+class CalcView(View):
+    def get(self, request):
+        index = Index.objects.first()
+        koef = str(index.koef).replace(',', '.')
 
-#         request.session['is_lo'] = True if not is_lo else False
-
-#         return redirect('index')
+        context = {
+            'koef': koef,
+        }
+        return render(request, 'core/calc.html', context)

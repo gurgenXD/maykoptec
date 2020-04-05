@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Интернет-приёмная</title>
+<meta name="description" content="Обратная связь. Интернет-приёмная">
+<meta name="keywords" content="обратная связь, feedback"> 
+{% endblock %}
+
+{% block content %}
+<main role="main">
+    <div class="subheader pb-4">
+        <div class="container pt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item small mb-0"><a href="{% url 'index' %}">Главная</a></li>
+            </ol>
+            <h1 class="page-header title-after text-white pb-4">Интернет-приёмная</h1>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row">
+            {% if user.user_type %}
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                <form class="needs-validation" enctype="multipart/form-data" novalidate method="POST" action="{% url 'feedback' %}">
+                    {% csrf_token %}
+                    <div class="form-label-group smaller mb-4">
+                        {{ feedback_form.name }}
+                        <label class="bg-white">Фамилия Имя Отчество</label>
+
+                        <div class="invalid-feedback">
+                            Это обязательное поле
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-label-group smaller mb-4">
+                                {{ feedback_form.phone }}
+                                <label class="bg-white">Контактный телефон</label>
+
+                                <div class="invalid-feedback">
+                                    Это обязательное поле
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-label-group smaller mb-4">
+                                {{ feedback_form.email }}
+                                <label class="bg-white">Электронная почта</label>
+
+                                <div class="invalid-feedback">
+                                    Это обязательное поле
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-label-group textarea smaller mb-4">
+                        {{ feedback_form.text }}
+                        <label class="bg-white">Текст обращения</label>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label>Прикрепить файл</label>
+                        {{ feedback_form.doc }}
+                    </div>
+
+                    <button class="btn btn-primary btn-lg ml-auto d-block" type="submit">Отправить</button>
+                </form>
+
+                {% for field in feedback_form %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger alert-dismissible small fade show" role="alert">
+                        <strong>Произошла ошибка! </strong>{{ error }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+
+                {% if feedback_done %}
+                <div class="form-success bg-white d-flex justify-content-center align-items-center">
+                    <div class="text-center">
+                        <i class="far fa-check-circle fa-5x text-primary mb-4"></i>
+                        <h3 class="h5 mb-1 mt-0">Спасибо за ваше обращение!</h3>
+                        <p class="smaller m-0">Мы получили его, и скоро с вами свяжемся.</p>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+            {% endif %}
+
+            {% include '__right-menu.html' %}
+        </div>
+    </div>
+</main>
+{% endblock %}

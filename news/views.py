@@ -20,4 +20,4 @@ class NewsDetailView(View):
         context = {
             'news_item': news_item,
         }
-        return render(request, 'news/news_detail.html', context)
+        return render(request, 'news/news-detail.html', context)

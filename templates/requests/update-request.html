@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Заявка от {{ item.created|date:"d.m.Y" }}</title>
+<meta name="description" content="Заявка пользователя">
+<meta name="keywords" content="заявка, профиль">
+{% endblock %}
+
+{% block content %}
+<main role="main">
+    <div class="subheader pb-4">
+        <div class="container pt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item small mb-0"><a href="{% url 'index' %}">Главная</a></li>
+                <li class="breadcrumb-item small mb-0"><a href="{% url 'profile' %}">Заявки</a></li>
+            </ol>
+            <h1 class="page-header title-after text-white pb-4">Заявка от {{ req.created|date:"d.m.Y" }}</h1>
+            <span class="d-block text-white smaller mb-3">{{ req.address }}</span>
+            {% if req.status == 'st15' %}
+                <span class="d-inline-block bg-success text-white small px-2 py-1 rounded-sm"><i class="fas fa-check mr-2"></i>{{ req.get_status_display  }}</span>
+            {% elif req.status == 'st9' %}
+                <span class="d-inline-block bg-danger text-white small px-2 py-1 rounded-sm"><i class="fas fa-exclamation-triangle mr-2"></i>{{ req.get_status_display }}</span>
+            {% else %}
+                <span class="d-inline-block bg-secondary text-white small px-2 py-1 rounded-sm"><i class="fas fa-briefcase mr-2"></i>{{ req.get_status_display }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container py-5">
+
+        <ul class="nav nav-tabs mx-n3" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="RequestEdit-Tab" data-toggle="tab" href="#RequestEdit-pane" role="tab" aria-controls="RequestEdit-pane" aria-selected="true">Редактировать</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="Support-Tab" data-toggle="tab" href="#Support-pane" role="tab" aria-controls="Support-pane" aria-selected="false">Поддержка</a>
+            </li>
+        </ul>
+
+        <div class="tab-content pt-4">
+            <div class="tab-pane fade show active" id="RequestEdit-pane" role="tabpanel" aria-labelledby="RequestEdit-tab">
+                <div class="row">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <h2 class="mb-4">Редактировать заявку</h2>
+                        <form class="needs-validation" enctype="multipart/form-data" novalidate method="POST" action="{{ req.get_absolute_url }}">
+                            {% csrf_token %}
+                            <div class="mb-5">
+                                <span class="d-block mb-2 smaller">Тип энергопринимающего устройства</span>
+                                {% for item in create_req_form.device_type %}
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    {{ item.tag }}
+                                    <label class="custom-control-label" for="{{ item.id_for_label }}">{{ item.choice_label }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+        
+                            <div class="form-group mb-5">
+                                <label class="smaller">Адрес принимающих устройств для присоединения</label>
+                                {{ create_req_form.address }}
+        
+                                <div class="invalid-feedback">
+                                    Это обязательное поле
+                                </div>
+                            </div>
+        
+                            <div class="form-group mb-5">
+                                <label class="smaller">Максимальная мощность энергопринимающих устройств (кВт)</label>
+                                {{ create_req_form.max_power }}
+        
+                                <div class="invalid-feedback">
+                                    Это обязательное поле
+                                </div>
+                            </div>
+        
+                            <div class="mb-5">
+                                <span class="d-block mb-2 smaller">Заявленный уровень надежности</span>
+                                {% for item in create_req_form.reliasbility_lvl %}
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    {{ item.tag }}
+                                    <label class="custom-control-label" for="{{ item.id_for_label }}">{{ item.choice_label }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+        
+                            <div class="mb-5">
+                                <span class="d-block mb-2 smaller">Заявленный уровень напряжения</span>
+                                {% for item in create_req_form.voltage_lvl %}
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    {{ item.tag }}
+                                    <label class="custom-control-label" for="{{ item.id_for_label }}">{{ item.choice_label }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+        
+                            <div class="mb-5">
+                                <span class="d-block mb-2 smaller">Причина подачи заявления</span>
+                                {% for item in create_req_form.reason %}
+                                <div class="custom-control custom-radio mb-1">
+                                    {{ item.tag }}
+                                    <label class="custom-control-label" for="{{ item.id_for_label }}">{{ item.choice_label }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+        
+                            <div class="form-group mb-5">
+                                <label class="smaller">Количество точек присоединения к электрической сети с указанием технических параметров элементов энергопринимающих устройст (класс напряжения и др.)</label>
+                                {{ create_req_form.points_count }}
+        
+                                <div class="invalid-feedback">
+                                    Это обязательное поле
+                                </div>
+                            </div>
+        
+                            <div class="form-group mb-5">
+                                <label class="smaller">Характер нагрузки (вид экономической деятельности хозяйствующего субъекта)</label>
+                                {{ create_req_form.load_type }}
+        
+                                <div class="invalid-feedback">
+                                    Это обязательное поле
+                                </div>
+                            </div>
+        
+                            <div class="mb-5">
+                                <span class="smaller d-block mb-2">Название документа</span>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        {{ create_req_form.file1 }}
+                                        <label class="custom-file-label">Прикрепить файл</label>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="mb-5">
+                                <span class="smaller d-block mb-2">Название другого документа</span>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        {{ create_req_form.file2 }}
+                                        <label class="custom-file-label">Прикрепить файл</label>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <button class="btn btn-primary btn-lg" type="submit">Сохранить изменения</button>
+                        </form>
+
+                        {% for field in create_req_form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger alert-dismissible small fade show" role="alert">
+                                    <strong>Произошла ошибка! </strong>{{ error }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% if updated %}
+                        <div class="alert alert-success alert-dismissible small fade show" role="alert">
+                            <strong>Поздравляем! </strong>Ваша заявка успешно изменена
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="Support-pane" role="tabpanel" aria-labelledby="Support-tab">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h2 class="mb-4">Написать администратору</h2>
+                        <form class="mb-5">
+                            <div class="form-label-group textarea smaller mb-3">
+                                <textarea class="form-control" rows="3" placeholder="Текст обращения"></textarea>
+                                <label class="bg-white">Текст сообщения</label>
+                            </div>
+                            <button class="btn btn-primary ml-auto d-block" type="submit">Отправить</button>
+
+<!--
+                            <div class="alert alert-danger alert-dismissible small fade show" role="alert">
+                                <strong>Произошла ошибка! </strong>Текст ошибки
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+-->
+
+                        </form>
+
+                        <div class="message message-admin p-4 ml-3 mb-4 bg-light rounded">
+                            <div class="mb-1">
+                                <span class="smaller font-weight-bold mr-2 pb-1">Администратор</span>
+                                <span class="small text-muted">11:02 / 20.04.2020</span>
+                            </div>
+                            <p class="smaller m-0">Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое.</p>
+                        </div>
+
+                        <div class="message message-me p-4 mr-3 mb-4 bg-primary rounded">
+                            <div class="mb-1">
+                                <span class="smaller font-weight-bold mr-2 pb-1">Я</span>
+                                <span class="small text-muted">10:58 / 20.04.2020</span>
+                            </div>
+                            <p class="smaller m-0">Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке которого еле держалось готовое вот-вот окончательно сползти одеяло.</p>
+                        </div>
+
+                        <div class="message message-admin p-4 ml-3 mb-4 bg-light rounded">
+                            <div class="mb-1">
+                                <span class="smaller font-weight-bold mr-2 pb-1">Администратор</span>
+                                <span class="small text-muted">11:02 / 20.04.2020</span>
+                            </div>
+                            <p class="smaller m-0">Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое.</p>
+                        </div>
+
+                        <div class="message message-me p-4 mr-3 mb-4 bg-primary rounded">
+                            <div class="mb-1">
+                                <span class="smaller font-weight-bold mr-2 pb-1">Я</span>
+                                <span class="small text-muted">10:58 / 20.04.2020</span>
+                            </div>
+                            <p class="smaller m-0">Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке которого еле держалось готовое вот-вот окончательно сползти одеяло.</p>
+                        </div>       
+
+                        <div class="message message-admin p-4 ml-3 mb-4 bg-light rounded">
+                            <div class="mb-1">
+                                <span class="smaller font-weight-bold mr-2 pb-1">Администратор</span>
+                                <span class="small text-muted">11:02 / 20.04.2020</span>
+                            </div>
+                            <p class="smaller m-0">Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое.</p>
+                        </div>
+
+                        <div class="message message-me p-4 mr-3 mb-4 bg-primary rounded">
+                            <div class="mb-1">
+                                <span class="smaller font-weight-bold mr-2 pb-1">Я</span>
+                                <span class="small text-muted">10:58 / 20.04.2020</span>
+                            </div>
+                            <p class="smaller m-0">Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке которого еле держалось готовое вот-вот окончательно сползти одеяло.</p>
+                        </div>
+
+                        <div class="message message-admin p-4 ml-3 mb-4 bg-light rounded">
+                            <div class="mb-1">
+                                <span class="smaller font-weight-bold mr-2 pb-1">Администратор</span>
+                                <span class="small text-muted">11:02 / 20.04.2020</span>
+                            </div>
+                            <p class="smaller m-0">Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое.</p>
+                        </div>
+
+                        <nav class="pt-3">
+                            <ul class="pagination pagination-sm justify-content-center">
+                                <li class="page-item active"><a class="page-link rounded-sm" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link rounded-sm" href="#">2</a></li>
+                                <li class="page-item disabled"><a class="page-link rounded-sm" href="#">...</a></li>
+                                <li class="page-item"><a class="page-link rounded-sm" href="#">5</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

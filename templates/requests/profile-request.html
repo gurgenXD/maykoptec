@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Заявки</title>
+<meta name="description" content="Заявки пользователя">
+<meta name="keywords" content="заявка, профиль">
+{% endblock %}
+
+{% block content %}
+<main role="main">
+    <div class="subheader pb-4">
+        <div class="container pt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item small mb-0"><a href="{% url 'index' %}">Главная</a></li>
+            </ol>
+            <h1 class="page-header title-after text-white pb-4">Заявки</h1>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="request-card bg-light p-4 rounded mb-4 d-flex align-items-center justify-content-center">
+                    <div class="text-center">
+                        <i class="fas fa-plus fa-3x text-muted mb-3"></i>
+                        <a href="{% url 'create_request' %}" title="" class="stretched-link d-block text-muted smaller">Создать заявку на технологическое присоединение</a>
+                    </div>
+                </div>
+            </div>
+
+            {% for item in reqs %}
+            <div class="col-lg-6">
+                <div class="request-card bg-light p-4 rounded mb-4">
+                    <a href="{{ item.get_absolute_url }}" title="" class="h5 stretched-link d-block mb-1">Заявка от {{ item.created|date:"d.m.Y" }}</a>
+                    <span class="d-block text-muted smaller mb-4">{{ item.address }}</span>
+                    {% if item.status == 'st15' %}
+                        <span class="d-inline-block bg-success text-white small px-2 py-1 rounded-sm"><i class="fas fa-check mr-2"></i>{{ item.get_status_display  }}</span>
+                    {% elif item.status == 'st9' %}
+                        <span class="d-inline-block bg-danger text-white small px-2 py-1 rounded-sm"><i class="fas fa-exclamation-triangle mr-2"></i>{{ item.get_status_display }}</span>
+                    {% else %}
+                        <span class="d-inline-block bg-secondary text-white small px-2 py-1 rounded-sm"><i class="fas fa-briefcase mr-2"></i>{{ item.get_status_display }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor%}
+        </div>
+    </div>
+</main>
+{% endblock %}

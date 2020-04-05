@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Калькулятор ТП</title>
+<meta name="description" content="Рассчитайте стоимость подключения вашего объекта к сетям">
+<meta name="keywords" content="калькулятор, стоимость"> 
+{% endblock %}
+
+{% block content %}
+<main role="main">
+    <div class="subheader pb-4">
+        <div class="container pt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item small mb-0"><a href="{% url 'index' %}">Главная</a></li>
+            </ol>
+            <h1 class="page-header title-after text-white pb-4">Калькулятор ТП</h1>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <p class="lead mb-4">Рассчитайте стоимость подключения вашего объекта к сетям, исходя из требуемой мощности</p>
+                <div class="bg-light rounded mb-5 mb-lg-0">
+                    <div class="row">
+                        <div class="col-auto mx-auto">
+                            <div class="p-5">
+                                <form>
+                                    <span class="d-block mb-2 smaller text">Требуемая мощность:</span>
+                                    <div class="d-flex align-items-center mb-5">
+                                        <div class="form-group smaller mb-0 mr-3">
+                                            <input type="text" data-koef="{{ koef }}" class="form-control calc-input font-weight-bold" placeholder="0" required>
+                                        </div>
+
+                                        <span class="font-weight-bold smaller">Киловатт</span>
+                                    </div>
+
+                                    <div>
+                                        <span class="d-block mb-1 small text-muted">Стоимость присоединения:</span>
+                                        <span class="calc-result h2">0</span>
+                                        <span class="small text-muted"><i class="fas fa-ruble-sign fa-lg text-dark mr-2"></i>(c НДС)</span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% include '__right-menu.html' %}
+        </div>
+    </div>
+</main>
+{% endblock %}

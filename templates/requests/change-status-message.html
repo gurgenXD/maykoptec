@@ -1,0 +1,9 @@
+{% autoescape off %}
+    На сайте http://{{ domain }} изменен статус.
+
+    Номер заявки: {{ id }}
+    Старый статус: {{ old.get_status_display }}
+    Новый статус: {{ new.get_status_display }}
+
+    Ссылка на сайт: http://{{ domain }}
+{% endautoescape %}

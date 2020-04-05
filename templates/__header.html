@@ -1,0 +1,112 @@
+{% load static %}
+{% load phone %}
+
+<div class="container">
+    <div class="top-bar d-flex justify-content-between pt-4 pb-2">
+        <a href="{% url 'index' %}" title="" class="top-bar-logo d-none d-lg-block">
+            <img src="{% static 'images/logo.png' %}" alt="">
+        </a>
+
+        <a href="tel:+{{ main_phone|only_digits }}" title="" class="top-bar-phone d-block text-white font-2 smaller"><span class="text-primary mr-2">{{ main_phone|phone_code }}</span>{{ main_phone|phone_nmb }}</a>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container px-0 px-sm-3">
+        <a class="navbar-brand d-lg-none" href="{% url 'index' %}">
+            <img src="{% static 'images/logo.png' %}" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="offcanvas">
+            <span class="navbar-toggler-icon"><i class="fas fa-bars"></i><i class="fas fa-times"></i></span>
+        </button>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto ml-n3">
+                {% for menu_item in menu %}
+                    {% if menu_item.sub_pages %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ menu_item.title }}<i class="fas fa-chevron-down fa-xs ml-2"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            {% for item in menu_item.sub_pages %}
+                            <a class="dropdown-item" href="{{ item.url }}">{{ item.title }}</a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                    {% else %}
+                        {% if not menu_item.parent %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ menu_item.url }}">{{ menu_item.title }}</a>
+                        </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            
+            {% if not user.is_authenticated %}
+            <a href="#" title="" class="btn btn-primary btn-sm" role="button" data-toggle="modal" data-target="#SignInModal">Личный кабинет</a>
+            {% else %}
+            <div class="dropdown">
+                <a class="btn btn-primary btn-sm dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Личный кабинет<i class="fas fa-chevron-down fa-xs ml-2"></i>
+                </a>
+
+                <div class="dropdown-menu mt-2">
+                    <a class="dropdown-item smaller" href="{% url 'profile' %}">Заявки</a>
+                    <a class="dropdown-item smaller" href="{% url 'profile_info' %}">Личная инфомация</a>
+                    <div class="dropdown-divider mx-4"></div>
+                    <a class="dropdown-item smaller" href="{% url 'logout' %}">Выйти</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="d-lg-none offcanvas-collapse navbar-expand-lg">
+            <div class="container px-3">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item py-3">
+                        {% if not user.is_authenticated %}
+                        <a href="#" title="" class="btn btn-primary btn-sm" role="button" data-toggle="modal" data-target="#SignInModal">Личный кабинет</a>
+                        {% else %}
+                        <div class="dropdown">
+                            <a class="btn btn-primary btn-sm dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Личный кабинет<i class="fas fa-chevron-down fa-xs ml-2"></i>
+                            </a>
+
+                            <div class="dropdown-menu mt-2">
+                                <a class="dropdown-item smaller" href="{% url 'profile' %}">Заявки</a>
+                                <a class="dropdown-item smaller" href="{% url 'profile_info' %}">Личная инфомация</a>
+                                <div class="dropdown-divider mx-4"></div>
+                                <a class="dropdown-item smaller" href="{% url 'logout' %}">Выйти</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </li>
+
+                    {% for menu_item in menu %}
+                        {% if menu_item.sub_pages %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ menu_item.title }}<i class="fas fa-chevron-down fa-xs ml-2"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                {% for item in menu_item.sub_pages %}
+                                <a class="dropdown-item" href="{{ item.url }}">{{ item.title }}</a>
+                                {% endfor %}
+                            </div>
+                        </li>
+                        {% else %}
+                            {% if not menu_item.parent %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ menu_item.url }}">{{ menu_item.title }}</a>
+                            </li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</nav>

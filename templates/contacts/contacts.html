@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load phone %}
+
+{% block title %}
+<title>Контакты</title>
+<meta name="description" content="Контактная информация">
+<meta name="keywords" content="контакты, телефон, email, адрес"> 
+{% endblock %}
+
+{% block content %}
+<main role="main">
+    <div class="subheader pb-4">
+        <div class="container pt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item small mb-0"><a href="{% url 'index' %}">Главная</a></li>
+                <li class="breadcrumb-item small mb-0"><a href="dropdown-content.html">О нас</a></li>
+            </ol>
+            <h1 class="page-header title-after text-white pb-4">Контакты</h1>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <address>
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="mb-5">
+                        <span class="d-block mb-2 smaller">Адрес</span>
+                        {% for item in addresses %}
+                        <span class="d-block h5 mb-2">{{ item.value }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-5">
+                        <span class="d-block mb-2 smaller">Электронная почта</span>
+                        {% for item in emails %}
+                        <a href="mailto:{{ item.value }}" title="" class="d-block h5 mb-2 text-dark">{{ item.value }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="mb-5">
+                        <span class="d-block mb-2 smaller">Центр ослуживания клиентов</span>
+                        {% for item in phones_customers %}
+                        <a href="tel:+{{ item.value|only_digits }}" title="" class="d-block h5 mb-2 text-dark"><span class="text-primary mr-2">{{ item.value|phone_code }}</span>{{  item.value|phone_nmb }}</a>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-5">
+                        <span class="d-block mb-2 smaller">Оперативно диспетчерская служба</span>
+                        {% for item in phones_dispatch %}
+                        <a href="tel:+{{ item.value|only_digits }}" title="" class="d-block h5 mb-2 text-dark"><span class="text-primary mr-2">{{ item.value|phone_code }}</span>{{  item.value|phone_nmb }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="mb-5">
+                        <span class="d-block mb-2 smaller">Режим работы</span>
+                        {% for item in schedule %}
+                        <span class="d-block h5 mb-2 text-dark"><span class="text-primary mr-2">{{ item.days }}:</span>{{ item.time }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </address>
+
+        {{ map_code.value|safe }}
+    </div>
+</main>
+{% endblock %}

@@ -27,10 +27,13 @@ urlpatterns = [
     path('admin/filebrowser/', site.urls),
     path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
+    path('', include('core.urls')),
     path('contacts/', include('contacts.urls')),
     path('feedback/', include('feedback.urls')),
     path('news/', include('news.urls')),
-    path('', include('core.urls')),
+    path('users/', include('users.urls')),
+    path('documents/', include('documents.urls')),
+    path('requests/', include('apps.urls')),
 ]
 
 if settings.DEBUG:

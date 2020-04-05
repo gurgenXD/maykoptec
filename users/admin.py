@@ -19,8 +19,9 @@ class MyUserAdmin(UserAdmin):
         }),
     )
 
-    # readonly_fields = ('country',)
-    # list_display = ('username', 'full_name', 'phone', 'email', 'is_active')
+    list_display = ('username', 'user_type', 'email', 'is_active', 'is_staff', 'get_profile_link')
+    list_filter = ('is_active', 'is_staff', 'is_superuser', 'user_type')
+    search_fields = ('user_type', 'username', 'email')
 
 
 @admin.register(Individual)
@@ -28,41 +29,44 @@ class IndividualAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('user', 'first_name', 'last_name', 'patronymic', 'phone')}),
         ('Паспорт', {
-            'classes': ('grp-collapse grp-opened',),
             'fields': ('p_series_number', 'p_issue_date', 'p_issued_by', 'p_address', 'p_address_fact')
         }),
         ('Водительские права', {
-            'classes': ('grp-collapse grp-opened',),
             'fields': ('v_number', 'v_code', 'v_issue_date', 'v_end_date', 'v_region', 'v_category'),
         }),
     )
+
+    list_display = ('user', 'first_name', 'last_name', 'patronymic', 'phone')
+    search_fields = ('user__username', 'first_name', 'user__email', 'last_name', 'patronymic')
 
 
 @admin.register(Entity)
 class EntityAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {'fields': ('inn', 'kpp', 'e_address', 'p_address')}),
+        (None, {'fields': ('user', 'inn', 'kpp', 'e_address', 'p_address')}),
         ('Данные контактного лица', {
-            'classes': ('grp-collapse grp-opened',),
             'fields': ('first_name', 'last_name', 'patronymic', 'phone', 'fax')
         }),
         ('Банковские реквизиты', {
-            'classes': ('grp-collapse grp-opened',),
             'fields': ('bank', 'bik', 'check', 'korr'),
         }),
     )
+
+    list_display = ('user', 'inn', 'kpp', 'e_address', 'p_address')
+    search_fields = ('user__username', 'first_name', 'user__email', 'last_name', 'patronymic', 'inn', 'kpp')
 
 
 @admin.register(BusinessMan)
 class BusinessManAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {'fields': ('inn', 'kpp', 'e_address', 'p_address')}),
+        (None, {'fields': ('user', 'inn', 'kpp', 'e_address', 'p_address')}),
         ('Данные контактного лица', {
-            'classes': ('grp-collapse grp-opened',),
             'fields': ('first_name', 'last_name', 'patronymic', 'phone', 'fax')
         }),
         ('Банковские реквизиты', {
-            'classes': ('grp-collapse grp-opened',),
             'fields': ('bank', 'bik', 'check', 'korr'),
         }),
     )
+
+    list_display = ('user', 'inn', 'kpp', 'e_address', 'p_address')
+    search_fields = ('user__username', 'first_name', 'user__email', 'last_name', 'patronymic', 'inn', 'kpp')

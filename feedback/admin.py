@@ -4,4 +4,4 @@ from feedback.models import *
 
 @admin.register(FeedBack)
 class FeedBackAdmin(admin.ModelAdmin):
-    list_display = ( 'name', 'email_or_phone', 'created')
+    list_display = ( 'name', 'email', 'phone', 'created')

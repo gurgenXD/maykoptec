@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Ошибка</title>
+<meta name="description" content="Ошибка при активации">
+<meta name="keywords" content="ошибка, error"> 
+{% endblock %}
+
+{% block content %}
+<main role="main">
+    <div class="subheader pb-4">
+        <div class="container pt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item small mb-0"><a href="{% url 'index' %}">Главная</a></li>
+            </ol>
+            <h1 class="page-header title-after text-white pb-4">Ошибка при активации</h1>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <h2>Ошибка</h2>
+        <p class="lead">Ссылка на активацию недействительна</p>
+    </div>
+</main>
+{% endblock %}

@@ -1,6 +1,7 @@
 from django.db import models
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit
+from contacts.models import Phone
 
 
 class SEO(models.Model):
@@ -71,46 +72,16 @@ class TitleTag(models.Model):
         return self.seo_title
 
 
-# class Index(models.Model):
-#     title = models.CharField(max_length=250, verbose_name='Заголовок')
-#     dir_text = models.TextField(verbose_name='Текст направления')
-#     process_text = models.TextField(verbose_name='Текст процесса обучения')
-#     contact_text = models.TextField(verbose_name='Текст контактов')
+class Index(models.Model):
+    title = models.CharField(max_length=250, verbose_name='Заголовок')
+    title_text = models.TextField(verbose_name='Текст под заголовком')
+    about = models.TextField(verbose_name='О нас')
+    phone = models.ForeignKey(Phone, on_delete=models.CASCADE, verbose_name='Телефон в меню')
+    koef = models.DecimalField('Коэффициет калькулятора', max_digits=11, decimal_places=2)
 
-#     class Meta:
-#         verbose_name = 'Главная страница'
-#         verbose_name_plural = 'Главная страница'
+    class Meta:
+        verbose_name = 'Главная страница'
+        verbose_name_plural = 'Главная страница'
 
-#     def __str__(self):
-#         return 'Главная страница #{0}'.format(self.id)
-
-
-# class Process(models.Model):
-#     index = models.ForeignKey(Index, on_delete=models.CASCADE, verbose_name='Главная', related_name='processes')
-#     title = models.CharField(max_length=250, verbose_name='Заголовок')
-#     text = models.TextField(verbose_name='Описание')
-#     image = models.FileField(upload_to='index/process/', max_length=254, verbose_name='Изображение')
-
-#     class Meta:
-#         verbose_name = 'Процесс обучения'
-#         verbose_name_plural = 'Процессы обучения'
-
-#     def __str__(self):
-#         return self.title
-
-
-# class IndexWork(models.Model):
-#     index = models.ForeignKey(Index, on_delete=models.CASCADE, verbose_name='Главная', related_name='index_works')
-#     image = models.ImageField(upload_to='index/partners/', verbose_name='Фото')
-
-#     image_small = ImageSpecField(source='image',
-#                                  processors=[ResizeToFit(290)],
-#                                  format='JPEG',
-#                                  options={'quality': 90})
-
-#     class Meta:
-#         verbose_name = 'Работа студентов'
-#         verbose_name_plural = 'Работы студентов'
-
-#     def __str__(self):
-#         return str(self.id)
+    def __str__(self):
+        return 'Главная страница №{0}'.format(self.id)

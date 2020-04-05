@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Зона деятельности</title>
+<meta name="description" content="Зона деятельности компании">
+<meta name="keywords" content="деятельность, зона, адреса"> 
+{% endblock %}
+
+{% block content %}
+<main role="main">
+    <div class="subheader pb-4">
+        <div class="container pt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item small mb-0"><a href="{% url 'index' %}">Главная</a></li>
+            </ol>
+            <h1 class="page-header title-after text-white pb-4">Зона деятельности</h1>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row">
+            {% for item in areas %}
+            <div class="col-lg-4">
+                <div class="covering-address mb-5">
+                    <h3 class="h6">{{ item.city }}</h3>
+                    <p class="small text-muted mb-0">{{ item.desc }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div> 
+
+        {{ map_code.value|safe }}
+
+        <div class="sidebar pt-5">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="function-card bg-white rounded px-4 py-4 mb-4 d-flex">
+                        <div>
+                            <img src="{% static 'images/function-card-icon-1.png' %}" alt="" class="mr-3">
+                        </div>
+                        <div>
+                            <a href="{% url 'activity_area' %}" title="" class="d-block stretched-link h6 text-dark mb-1">Зона деятельности</a>
+                            <p class="mb-0 small text-muted">Узнайте о возможности подключения вашего дома</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="function-card bg-white rounded px-4 py-4 mb-4 d-flex">
+                        <div>
+                            <img src="{% static 'images/function-card-icon-2.png' %}" alt="" class="mr-3">
+                        </div>
+                        <div>
+                            <a href="{% url 'feedback' %}" title="" class="d-block stretched-link h6 text-dark mb-1">Интернет-приёмная</a>
+                            <p class="mb-0 small text-muted">Задайте вопрос о деятельности "Майкопская ТЭЦ"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="function-card bg-white rounded px-4 py-4 mb-4 d-flex">
+                        <div>
+                            <img src="{% static 'images/function-card-icon-3.png' %}" alt="" class="mr-3">
+                        </div>
+                        <div>
+                            <a href="{% url 'calc' %}" title="" class="d-block stretched-link h6 text-dark mb-1">Калькулятор ТП</a>
+                            <p class="mb-0 small text-muted">Рассчитайте стоимость подключения вашего объекта к сетям</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

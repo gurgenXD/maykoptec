@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load phone %}
+
+{% block title %}
+<title>Главная</title>
+<meta name="description" content="Майкопская ТЭЦ">
+<meta name="keywords" content="майкопская ТЭЦ, ТЭЦ, maykoptec"> 
+{% endblock %}
+
+{% block content %}
+<main role="main">
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-10">
+                    <h2 class="text-white text-uppercase">{{ index.title }}</h2>
+                    <p class="text-white mb-5">{{ index.title_text|striptags }}</p>
+                    <a href="{% url 'signup' %}" title="" class="btn btn-primary btn-lg mr-4 mb-3">Присоединиться к сети</a>
+                    <a href="{% url 'profile' %}" title="" class="btn btn-light btn-lg mb-3">Узнать статус заявки</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="pb-0 pb-lg-5">
+        <div class="container mt-n5">
+            <div class="row mx-n4">
+                <div class="col-lg-4 px-4">
+                    <div class="function-card bg-white rounded px-4 py-5 text-center mb-4 mb-lg-0">
+                        <img src="{% static 'images/function-card-icon-1.png' %}" alt="" class="mb-4">
+                        <a href="{% url 'activity_area' %}" title="" class="d-block stretched-link h4 text-dark">Зона деятельности</a>
+                        <p class="mb-0 smaller text-muted">Узнайте о возможности подключения вашего дома</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 px-4">
+                    <div class="function-card bg-white rounded px-4 py-5 text-center mb-4 mb-lg-0">
+                        <img src="{% static 'images/function-card-icon-2.png' %}" alt="" class="mb-4">
+                        <a href="{% url 'feedback' %}" title="" class="d-block stretched-link h4 text-dark">Интернет-приёмная</a>
+                        <p class="mb-0 smaller text-muted">Задайте вопрос о деятельности "Майкопская ТЭЦ"</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 px-4">
+                    <div class="function-card bg-white rounded px-4 py-5 text-center mb-4 mb-lg-0">
+                        <img src="{% static 'images/function-card-icon-3.png' %}" alt="" class="mb-4">
+                        <a href="{% url 'calc' %}" title="" class="d-block stretched-link h4 text-dark">Калькулятор ТП</a>
+                        <p class="mb-0 smaller text-muted">Рассчитайте стоимость подключения вашего объекта к сетям</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container pt-4 pb-4">
+            <div class="row">
+                <div class="col-lg-7">
+                    <article>
+                        <h1 class="mb-4 title-after pb-4 mb-5">ООО «Майкопская ТЭЦ»</h1>
+                        {{ index.about|safe }}
+                    </article>
+                </div> 
+                <div class="col-lg-4 ml-auto">
+                    <div class="main-news-container bg-light rounded overflow-hidden">
+                        <h3 class="pt-4 px-4">Новости</h3>
+                        {% for item in news %}
+                        <div class="main-news-item position-relative p-4">
+                            <a href="{{ item.get_absolute_url }}" title="" class="d-block stretched-link text-dark smaller mb-2">{{ item.title }}</a>
+                            <span class="d-block small text-muted">{{ item.created|date:"j E" }}</span>
+                        </div>
+                        {% endfor %}
+
+                        <a href="{% url 'news' %}" title="" class="d-block p-4 text-lowercase text-dark">Все новости<i class="fas fa-angle-right fa-sm ml-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container py-4">
+            <h2 class="title-after pb-4 mb-5">Зона деятельности</h2>
+
+            <div class="row">
+                {% for item in areas %}
+                <div class="col">
+                    <div class="covering-address mb-5">
+                        <h3 class="h6">{{ item.city }}</h3>
+                        <p class="small text-muted mb-0">{{ item.desc }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {{ area_code.value|safe }}
+        </div>
+    </section>
+
+    <section class="py-5 bg-dark">
+        <div class="container py-4">
+            <h2 class="title-after text-white pb-4 mb-5">Контакты</h2>
+
+            <address>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="mb-5">
+                            <span class="d-block mb-2 text-light smaller">Адрес</span>
+                            {% for item in addresses %}
+                            <span class="d-block h5 mb-2 text-white">{{ item.value }}</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-5">
+                            <span class="d-block mb-2 text-light smaller">Электронная почта</span>
+                            {% for item in emails %}
+                            <a href="mailto:{{ item.value }}" title="" class="d-block h5 mb-2 text-white">{{ item.value }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="mb-5">
+                            <span class="d-block mb-2 text-light smaller">Центр ослуживания клиентов</span>
+                            {% for item in phones_customers %}
+                            <a href="tel:+{{ item.value|only_digits }}" title="" class="d-block h5 mb-2 text-white"><span class="text-primary mr-2">{{ item.value|phone_code }}</span>{{  item.value|phone_nmb }}</a>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-5">
+                            <span class="d-block mb-2 text-light smaller">Оперативно диспетчерская служба</span>
+                            {% for item in phones_dispatch %}
+                            <a href="tel:+{{ item.value|only_digits }}" title="" class="d-block h5 mb-2 text-white"><span class="text-primary mr-2">{{ item.value|phone_code }}</span>{{  item.value|phone_nmb }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="mb-5">
+                            <span class="d-block mb-2 text-light smaller">Режим работы</span>
+                            {% for item in schedule %}
+                            <span class="d-block h5 mb-2 text-white"><span class="text-primary mr-2">{{ item.days }}:</span>{{ item.time }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </address>
+            {{ map_code.value|safe }}
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% load static %}
+
+<footer class="footer py-5 bg-dark">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-3 col-md-6">
+                {% for item in footer_menu %}
+                    {% if item.parent.url == '/about/' %}
+                    <a href="{{ item.url }}" title="" class="d-block smaller text-muted mb-1">{{ item.title }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                {% for item in footer_menu %}
+                    {% if item.parent.url == '/consumers/' %}
+                    <a href="{{ item.url }}" title="" class="d-block smaller text-muted mb-1">{{ item.title }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                {% for item in footer_menu %}
+                    {% if not item.parent and not item.sub_pages %}
+                    <a href="{{ item.url }}" title="" class="d-block smaller text-muted mb-1">{{ item.title }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="d-inline-block pt-4 pt-lg-0">
+                    <a href="{% url 'index' %}" title="" class="d-block mb-1">
+                        <img src="{% static 'images/logo.png' %}" alt="">
+                    </a>
+                    <span class="d-block text-light small">2020 © ООО Майкопская ТЭЦ</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-devlogo-conatiner text-center pt-5">
+            <div class="d-inline-block">
+                <div class="position-relative d-flex align-items-center devlogo">
+                    <img src="{% static 'images/devlogo.svg' %}" alt="Webline Masters">
+                    <div class="ml-2 d-flex align-items-start flex-column">
+                        <span class="text-light">Webline Masters</span>
+                        <a href="http://wlms.info" target="_blank" class="stretched-link text-muted" title="Webline Masters">создание и продвижение сайтов</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</footer>

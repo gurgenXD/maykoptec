@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Новости</title>
+<meta name="description" content="Новости сайта">
+<meta name="keywords" content="новости, новое, информация">
+{% endblock %}
+
+{% block content %}
+<main role="main">
+    <div class="subheader pb-4">
+        <div class="container pt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item small mb-0"><a href="{% url 'index' %}">Главная</a></li>
+                <li class="breadcrumb-item small mb-0"><a href="dropdown-content.html">О нас</a></li>
+            </ol>
+            <h1 class="page-header title-after text-white pb-4">Новости</h1>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                <div class="row">
+                    {% for item in news %}
+                    <div class="col-lg-6">
+                        <div class="news-item bg-light p-4 rounded mb-4">
+                            <a href="{{ item.get_absolute_url }}" title="" class="d-block stretched-link text-dark smaller mb-2">{{ item.title }}</a>
+                            <span class="d-block small text-muted">{{ item.created|date:"j E"}}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% include '__right-menu.html' %}                      
+        </div>
+    </div>
+</main>
+{% endblock %}
