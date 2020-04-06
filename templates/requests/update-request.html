@@ -30,15 +30,15 @@
 
         <ul class="nav nav-tabs mx-n3" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="RequestEdit-Tab" data-toggle="tab" href="#RequestEdit-pane" role="tab" aria-controls="RequestEdit-pane" aria-selected="true">Редактировать</a>
+                <a class="nav-link {% if not chat %}active{% endif %}" id="RequestEdit-Tab" data-toggle="tab" href="#RequestEdit-pane" role="tab" aria-controls="RequestEdit-pane" aria-selected="true">Редактировать</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="Support-Tab" data-toggle="tab" href="#Support-pane" role="tab" aria-controls="Support-pane" aria-selected="false">Поддержка</a>
+                <a class="nav-link {% if chat %}active{% endif %}" id="Support-Tab" data-toggle="tab" href="#Support-pane" role="tab" aria-controls="Support-pane" aria-selected="false">Поддержка</a>
             </li>
         </ul>
 
         <div class="tab-content pt-4">
-            <div class="tab-pane fade show active" id="RequestEdit-pane" role="tabpanel" aria-labelledby="RequestEdit-tab">
+            <div class="tab-pane fade {% if not chat %}show active{% endif %}" id="RequestEdit-pane" role="tabpanel" aria-labelledby="RequestEdit-tab">
                 <div class="row">
                     <div class="col-lg-6 mb-5 mb-lg-0">
                         <h2 class="mb-4">Редактировать заявку</h2>
@@ -166,92 +166,75 @@
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="Support-pane" role="tabpanel" aria-labelledby="Support-tab">
+            <div class="tab-pane fade {% if chat %}show active{% endif %}" id="Support-pane" role="tabpanel" aria-labelledby="Support-tab">
                 <div class="row">
                     <div class="col-lg-8">
                         <h2 class="mb-4">Написать администратору</h2>
-                        <form class="mb-5">
+                        <form class="mb-5 needs-validation" novalidate method="POST" action="{% url 'add_chat_msg' req.id %}">
+                            {% csrf_token %}
                             <div class="form-label-group textarea smaller mb-3">
-                                <textarea class="form-control" rows="3" placeholder="Текст обращения"></textarea>
+                                {{ chat_form.text }}
                                 <label class="bg-white">Текст сообщения</label>
                             </div>
                             <button class="btn btn-primary ml-auto d-block" type="submit">Отправить</button>
 
-<!--
-                            <div class="alert alert-danger alert-dismissible small fade show" role="alert">
-                                <strong>Произошла ошибка! </strong>Текст ошибки
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
--->
-
+                            {% for field in chat_form %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger alert-dismissible small fade show" role="alert">
+                                        <strong>Произошла ошибка! </strong>{{ error }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
                         </form>
 
-                        <div class="message message-admin p-4 ml-3 mb-4 bg-light rounded">
-                            <div class="mb-1">
-                                <span class="smaller font-weight-bold mr-2 pb-1">Администратор</span>
-                                <span class="small text-muted">11:02 / 20.04.2020</span>
+                        {% for msg in page_object.object_list %}
+                            {% if msg.msg_from.is_staff %}
+                            <div class="message message-admin p-4 ml-3 mb-4 bg-light rounded">
+                                <div class="mb-1">
+                                    <span class="smaller font-weight-bold mr-2 pb-1">Администратор</span>
+                                    <span class="small text-muted">{{ msg.created|date:"H:i / d.m.Y" }}</span>
+                                </div>
+                                <p class="smaller m-0">{{ msg.text }}</p>
                             </div>
-                            <p class="smaller m-0">Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое.</p>
-                        </div>
-
-                        <div class="message message-me p-4 mr-3 mb-4 bg-primary rounded">
-                            <div class="mb-1">
-                                <span class="smaller font-weight-bold mr-2 pb-1">Я</span>
-                                <span class="small text-muted">10:58 / 20.04.2020</span>
+                            {% else %}
+                            <div class="message message-me p-4 mr-3 mb-4 bg-primary rounded">
+                                <div class="mb-1">
+                                    <span class="smaller font-weight-bold mr-2 pb-1">Я</span>
+                                    <span class="small text-muted">{{ msg.created|date:"H:i / d.m.Y" }}</span>
+                                </div>
+                                <p class="smaller m-0">{{ msg.text }}</p>
                             </div>
-                            <p class="smaller m-0">Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке которого еле держалось готовое вот-вот окончательно сползти одеяло.</p>
-                        </div>
+                            {% endif %}
+                        {% endfor %}
 
-                        <div class="message message-admin p-4 ml-3 mb-4 bg-light rounded">
-                            <div class="mb-1">
-                                <span class="smaller font-weight-bold mr-2 pb-1">Администратор</span>
-                                <span class="small text-muted">11:02 / 20.04.2020</span>
-                            </div>
-                            <p class="smaller m-0">Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое.</p>
-                        </div>
-
-                        <div class="message message-me p-4 mr-3 mb-4 bg-primary rounded">
-                            <div class="mb-1">
-                                <span class="smaller font-weight-bold mr-2 pb-1">Я</span>
-                                <span class="small text-muted">10:58 / 20.04.2020</span>
-                            </div>
-                            <p class="smaller m-0">Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке которого еле держалось готовое вот-вот окончательно сползти одеяло.</p>
-                        </div>       
-
-                        <div class="message message-admin p-4 ml-3 mb-4 bg-light rounded">
-                            <div class="mb-1">
-                                <span class="smaller font-weight-bold mr-2 pb-1">Администратор</span>
-                                <span class="small text-muted">11:02 / 20.04.2020</span>
-                            </div>
-                            <p class="smaller m-0">Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое.</p>
-                        </div>
-
-                        <div class="message message-me p-4 mr-3 mb-4 bg-primary rounded">
-                            <div class="mb-1">
-                                <span class="smaller font-weight-bold mr-2 pb-1">Я</span>
-                                <span class="small text-muted">10:58 / 20.04.2020</span>
-                            </div>
-                            <p class="smaller m-0">Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке которого еле держалось готовое вот-вот окончательно сползти одеяло.</p>
-                        </div>
-
-                        <div class="message message-admin p-4 ml-3 mb-4 bg-light rounded">
-                            <div class="mb-1">
-                                <span class="smaller font-weight-bold mr-2 pb-1">Администратор</span>
-                                <span class="small text-muted">11:02 / 20.04.2020</span>
-                            </div>
-                            <p class="smaller m-0">Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое.</p>
-                        </div>
-
+                        {% if is_paginated %}
                         <nav class="pt-3">
                             <ul class="pagination pagination-sm justify-content-center">
-                                <li class="page-item active"><a class="page-link rounded-sm" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link rounded-sm" href="#">2</a></li>
-                                <li class="page-item disabled"><a class="page-link rounded-sm" href="#">...</a></li>
-                                <li class="page-item"><a class="page-link rounded-sm" href="#">5</a></li>
+                                {% if page_object.number|add:'-2' in page_object.paginator.page_range %}
+                                    <li class="page-item"><a class="page-link rounded-sm" href="?page=1">1</a></li>
+                                {% endif %}
+                                {% if page_object.number|add:'-3' in page_object.paginator.page_range %}
+                                    <li class="page-item disabled"><a class="page-link rounded-sm" href="#">...</a></li>
+                                {% endif %}
+                                {% for n in page_object.paginator.page_range %}
+                                    {% if page_object.number == n %}
+                                        <li class="page-item active"><a class="page-link rounded-sm" href="?page={{ n }}">{{ n }}</a></li>
+                                    {% elif n > page_object.number|add:'-2' and n < page_object.number|add:'2' %}
+                                        <li class="page-item"><a class="page-link rounded-sm" href="?page={{ n }}">{{ n }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if page_object.number|add:'3' in page_object.paginator.page_range %}
+                                    <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                                {% endif %}
+                                {% if page_object.number|add:'2' in page_object.paginator.page_range %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ page_object.paginator.num_pages }}">{{ page_object.paginator.num_pages }}</a></li>
+                                {% endif %}
                             </ul>
                         </nav>
+                        {% endif %}
                     </div>
 
                 </div>

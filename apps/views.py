@@ -5,8 +5,9 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from core.models import MailToString, MailFromString
 from apps.models import ReqApp
-from apps.forms import ReqForm
+from apps.forms import *
 from django.http import Http404
+from core.pagination import pagination
 
 
 class ProfileRequestView(View):
@@ -81,10 +82,25 @@ class UpdateRequestView(View):
             'load_type': req.load_type,
         })
 
+        chat_form = ChatForm()
+        chat_messages = ChatMessage.objects.filter(req=req).order_by('-created')
+
+        page_number = request.GET.get('page', 1)
+        pag_res = pagination(chat_messages, page_number)
+        chat = True if int(page_number) > 1 else False
+
         context = {
             'create_req_form': create_req_form,
             'req': req,
             'updated': False,
+            'chat_form': chat_form,
+            'chat_messages': chat_messages,
+            'chat': chat,
+
+            'page_object': pag_res['page'],
+            'is_paginated': pag_res['is_paginated'],
+            'next_url': pag_res['next_url'],
+            'prev_url': pag_res['prev_url'],
         }
 
         return render(request, 'requests/update-request.html', context)
@@ -98,17 +114,94 @@ class UpdateRequestView(View):
             raise Http404('Страница не найдена')
 
         create_req_form = ReqForm(request.POST, request.FILES, instance=req)
+        chat_form = ChatForm()
 
         if create_req_form.is_valid():
             create_req_form.save()
             updated = True
 
+        chat_messages = ChatMessage.objects.filter(req=req).order_by('-created')
+
+        page_number = request.GET.get('page', 1)
+        pag_res = pagination(chat_messages, page_number)
 
         context = {
             'create_req_form': create_req_form,
             'req': req,
             'updated': updated,
+            'chat_form': chat_form,
+            'chat_messages': chat_messages,
+            'chat': False,
+
+            'page_object': pag_res['page'],
+            'is_paginated': pag_res['is_paginated'],
+            'next_url': pag_res['next_url'],
+            'prev_url': pag_res['prev_url'],
         }
 
         return render(request, 'requests/update-request.html', context)
 
+
+class AddChatMessage(View):
+    def post(self, request, req_id):
+        user = request.user
+        req = get_object_or_404(ReqApp, id=req_id)
+
+        if req.user != user:
+            raise Http404('Страница не найдена')
+
+        chat_form = ChatForm(request.POST)
+
+        create_req_form = ReqForm(initial={
+            'device_type': req.device_type,
+            'address': req.address,
+            'max_power': req.max_power,
+            'reliasbility_lvl': req.reliasbility_lvl,
+            'voltage_lvl': req.voltage_lvl,
+            'reason': req.reason,
+            'points_count': req.points_count,
+            'load_type': req.load_type,
+        })
+
+        if chat_form.is_valid():
+            msg = chat_form.save(commit=False)
+            msg.msg_from = req.user
+            staff = User.objects.filter(is_staff=True).first()
+            msg.msg_to = staff
+            msg.req = req
+            msg.save()
+
+            current_site = get_current_site(request)
+            mail_subject = 'Новое обращение в тех. поддержку: ' + current_site.domain
+            message = render_to_string('requests/chat-message.html', {
+                'domain': current_site.domain,
+                'req': req,
+                'msg': msg,
+            })
+            to_email = [item.email for item in MailToString.objects.all()]
+            from_email = MailFromString.objects.first().host_user
+            email = EmailMessage(mail_subject, message, from_email=from_email, to=to_email)
+            email.send()
+
+            return redirect('/requests/update-request/{0}/'.format(req.id))
+
+        chat_messages = ChatMessage.objects.filter(req=req).order_by('-created')
+
+        page_number = request.GET.get('page', 1)
+        pag_res = pagination(chat_messages, page_number)
+
+        context = {
+            'create_req_form': create_req_form,
+            'chat_form': chat_form,
+            'chat_messages': chat_messages,
+            'req': req,
+            'updated': False,
+            'chat': True,
+
+            'page_object': pag_res['page'],
+            'is_paginated': pag_res['is_paginated'],
+            'next_url': pag_res['next_url'],
+            'prev_url': pag_res['prev_url'],
+        }
+
+        return render(request, 'requests/update-request.html', context)

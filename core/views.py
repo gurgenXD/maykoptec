@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import View
 from news.models import News
 from core.models import Index
 from contacts.models import *
+from pages.models import Page
+from django.http import Http404
 
 
 class IndexView(View):
@@ -44,3 +46,22 @@ class CalcView(View):
             'koef': koef,
         }
         return render(request, 'core/calc.html', context)
+
+
+class DropMenuView(View):
+    def get(self, request, drop_menu):
+        drop_page = Page.objects.filter(url__icontains=drop_menu, parent=None).first()
+
+        if not drop_page:
+            raise Http404('Страница не найдена')
+
+        pages = Page.objects.filter(parent=drop_page)
+
+        if not pages:
+            raise Http404('Страница не найдена')
+
+        context = {
+            'pages': pages,
+            'drop_page': drop_page,
+        }
+        return render(request, 'core/drop_menu.html', context)

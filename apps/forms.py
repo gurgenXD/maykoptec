@@ -18,3 +18,12 @@ class ReqForm(forms.ModelForm):
             'file1': forms.ClearableFileInput(attrs={'class': 'custom-file-input'}),
             'file2': forms.ClearableFileInput(attrs={'class': 'custom-file-input'}),
         }
+
+
+class ChatForm(forms.ModelForm):
+    class Meta:
+        model = ChatMessage
+        fields = ('text',)
+        widgets = {
+            'text': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Текст обращения'}),
+        }

@@ -1,0 +1,13 @@
+{% autoescape off %}
+    На сайте http://{{ domain }} новое сообщение.
+
+    Новое сообщение в чате с тех. поддержкой:
+
+    Номер заявки: {{ req.id }}
+    Дата создания заявки: {{ req.created|date:"d.m.Y" }}
+    Адрес: {{ req.address }}
+    Пользователь: {{ msg.msg_from }}
+    Сообщеине: {{ msg.text }}
+
+    Ссылка на сайт: http://{{ domain }}
+{% endautoescape %}

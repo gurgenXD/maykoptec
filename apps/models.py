@@ -120,3 +120,20 @@ def send_email(sender, instance, **kwargs):
         from_email = MailFromString.objects.first().host_user
         email = EmailMessage(mail_subject, message, from_email=from_email, to=[to_email])
         email.send()
+
+
+class ChatMessage(models.Model):
+    req = models.ForeignKey(ReqApp, on_delete=models.CASCADE, related_name='chat_messages', verbose_name='Сообщения')
+    msg_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages_from', verbose_name='От кого', blank=True, null=True)
+    msg_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages_to', verbose_name='Кому', blank=True, null=True)
+    text = models.TextField(verbose_name='Текст сообщения')
+
+    created = models.DateTimeField('Дата создания', auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Сообщение'
+        verbose_name_plural = 'Чат'
+        ordering = ('created',)
+
+    def __str__(self):
+        return 'От: {0}, Кому: {1}'.format(self.msg_from, self.msg_to)
