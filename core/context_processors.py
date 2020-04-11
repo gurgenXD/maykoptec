@@ -9,7 +9,10 @@ def context_info(request):
     es_form = EntitySignInForm()
 
     menu = Page.objects.filter(is_active=True)
-    main_phone = Index.objects.first().phone
+    try:
+        main_phone = Index.objects.first().phone
+    except:
+        main_phone = None
 
     footer_menu = Page.objects.filter(in_footer=True)
 
