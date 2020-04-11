@@ -1,12 +1,14 @@
 from users.forms import BusinessManSignInForm, IndividualSignInForm, EntitySignInForm
 from pages.models import Page
-from core.models import Index
+from core.models import Index, TitleTag
 
 
 def context_info(request):
     bs_form = BusinessManSignInForm()
     is_form = IndividualSignInForm()
     es_form = EntitySignInForm()
+
+    seo_titles = TitleTag.objects.filter(url=request.path).first()
 
     menu = Page.objects.filter(is_active=True)
     try:
@@ -20,6 +22,7 @@ def context_info(request):
         'bs_form': bs_form,
         'is_form': is_form,
         'es_form': es_form,
+        'seo_titles': seo_titles,
         'menu': menu,
         'main_phone': main_phone,
         'footer_menu': footer_menu,
