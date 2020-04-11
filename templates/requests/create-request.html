@@ -19,6 +19,12 @@
     </div>
 
     <div class="container py-5">
+        <div class="bg-light p-5 mb-5">
+            <h4>ВАЖНО!</h4>
+            <p>Для оформления заявки необходимо предоставить сканирование копии документов. Список документов находится в файле, доступном для скачивания по ссылке ниже. Вы можете предоставить документы после оформления заявки. Работы по вашему проекту начнуться после предоставления необходимых документов.</p>
+            <a href="{{ doc_list.url }}" title="" class="btn btn-primary btn-lg" download><i class="fas fa-file-download mr-3"></i>Скачать список документов</a>
+        </div>
+
         <div class="row">
             <div class="col-lg-6">
                 <form class="needs-validation" enctype="multipart/form-data" novalidate method="POST" action="{% url 'create_request' %}">
@@ -99,23 +105,37 @@
                         </div>
                     </div>
 
-                    <div class="mb-5">
-                        <span class="smaller d-block mb-2">Название документа</span>
-                        <div class="input-group">
-                            <div class="custom-file">
-                                {{ create_req_form.file1 }}
-                                <label class="custom-file-label">Прикрепить файл</label>
+                    <div class="bg-light p-4 mb-5">
+                        <h4>Документы</h4>
+
+                        <div id="custom_docs">
+                            <div id="custom_doc0">
+                                <div class="mb-5">
+                                    <div class="form-label-group smaller mb-3">
+                                        <input type="text" class="form-control" name="doc_0_name" placeholder="Название документа" required>
+                                        <label class="bg-light">Название документа</label>
+
+                                        <div class="invalid-feedback">
+                                            Это обязательное поле
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" name="doc_0" class="custom-file-input" required>
+                                            <label class="custom-file-label bg-light">Скан документа</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="custom_doc1">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="mb-5">
-                        <span class="smaller d-block mb-2">Название другого документа</span>
-                        <div class="input-group">
-                            <div class="custom-file">
-                                {{ create_req_form.file2 }}
-                                <label class="custom-file-label">Прикрепить файл</label>
-                            </div>
+                        <div class="d-flex justify-content-between">
+                            <a id="add_custom_doc" class="btn btn-primary">Добавить</a>
+                            <a id='delete_custom_doc' class="btn btn-dark text-light">Удалить</a>
                         </div>
                     </div>
 

@@ -45,7 +45,7 @@ class FeedBackView(View):
                 'name': request.POST.get('name'),
                 'text': request.POST.get('text'),
             })
-            to_email = [item.email for item in MailToString.objects.all()]
+            to_email = [item.email for item in MailToString.objects.filter(email_type='all')]
             from_email = MailFromString.objects.first().host_user
             email = EmailMessage(mail_subject, message, from_email=from_email, to=to_email)
             email.send()

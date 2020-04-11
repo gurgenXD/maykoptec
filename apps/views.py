@@ -8,6 +8,25 @@ from apps.models import ReqApp
 from apps.forms import *
 from django.http import Http404
 from core.pagination import pagination
+from core.pdf_generator import generate_pdf
+from core.models import Index
+
+
+def send_pdf(request, new_req):
+    current_site = get_current_site(request)
+    mail_subject = 'Новая заявка на сайте: ' + current_site.domain
+    message = render_to_string('requests/request-message.html', {
+        'domain': current_site.domain,
+        'id': new_req.id,
+        'address': new_req.address,
+        'username': new_req.user.username,
+    })
+    to_email = [item.email for item in MailToString.objects.filter(email_type='req')]
+    to_email.append(new_req.user.email)
+    from_email = MailFromString.objects.first().host_user
+    email = EmailMessage(mail_subject, message, from_email=from_email, to=to_email)
+    email.attach_file(new_req.pdf.path)
+    email.send()
 
 
 class ProfileRequestView(View):
@@ -25,9 +44,11 @@ class ProfileRequestView(View):
 class CreateRequestView(View):
     def get(self, request):
         create_req_form = ReqForm()
+        doc_list = Index.objects.first().file
 
         context = {
             'create_req_form': create_req_form,
+            'doc_list': doc_list,
         }
 
         return render(request, 'requests/create-request.html', context)
@@ -35,28 +56,28 @@ class CreateRequestView(View):
     def post(self, request):
         user = request.user
         create_req_form = ReqForm(request.POST, request.FILES)
+        doc_list = Index.objects.first().file
 
         if create_req_form.is_valid():
             new_req = create_req_form.save(commit=False)
             new_req.user = user
             new_req.save()
 
-            current_site = get_current_site(request)
-            mail_subject = 'Новая заявка на сайте: ' + current_site.domain
-            message = render_to_string('requests/request-message.html', {
-                'domain': current_site.domain,
-                'id': new_req.id,
-                'address': new_req.address,
-                'username': new_req.user.username,
-            })
-            to_email = [item.email for item in MailToString.objects.all()]
-            from_email = MailFromString.objects.first().host_user
-            email = EmailMessage(mail_subject, message, from_email=from_email, to=to_email)
-            email.send()
+            for item in request.FILES:
+                if item.find('doc') != -1:
+                    ReqDocuments.objects.create(
+                        req=new_req,
+                        title=request.POST[item + '_name'] or 'Без названия',
+                        document=request.FILES[item]
+                    )
+
+            generate_pdf({'req': new_req})
+            send_pdf(request, new_req)
 
             return redirect('profile')
 
         context = {
+            'doc_list': doc_list,
             'create_req_form': create_req_form,
         }
 
@@ -118,6 +139,17 @@ class UpdateRequestView(View):
 
         if create_req_form.is_valid():
             create_req_form.save()
+
+            for item in request.FILES:
+                if item.find('doc') != -1:
+                    ReqDocuments.objects.create(
+                        req=req,
+                        title=request.POST[item + '_name'] or 'Без названия',
+                        document=request.FILES[item]
+                    )
+
+            generate_pdf({'req': req})
+
             updated = True
 
         chat_messages = ChatMessage.objects.filter(req=req).order_by('-created')
@@ -178,7 +210,7 @@ class AddChatMessage(View):
                 'req': req,
                 'msg': msg,
             })
-            to_email = [item.email for item in MailToString.objects.all()]
+            to_email = [item.email for item in MailToString.objects.filter(emaiL_type='req')]
             from_email = MailFromString.objects.first().host_user
             email = EmailMessage(mail_subject, message, from_email=from_email, to=to_email)
             email.send()

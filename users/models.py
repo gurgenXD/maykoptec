@@ -34,23 +34,16 @@ class User(AbstractUser):
 
 class Individual(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='individual', verbose_name='Пользователь')
-    first_name = models.CharField('Имя', max_length=50, blank=True, null=True)
-    last_name = models.CharField('Фамилия', max_length=150, blank=True, null=True)
-    patronymic = models.CharField('Отчество', max_length=150, blank=True, null=True)
-    phone = models.CharField('Телефон', max_length=20, blank=True, null=True)
+    first_name = models.CharField('Имя', max_length=50)
+    last_name = models.CharField('Фамилия', max_length=150)
+    patronymic = models.CharField('Отчество', max_length=150)
+    phone = models.CharField('Телефон', max_length=20)
 
-    p_series_number = models.CharField('Серия и номер', max_length=20, blank=True, null=True)
-    p_issue_date = models.DateField('Дата выдачи', blank=True, null=True)
-    p_issued_by = models.CharField('Кем выдан', max_length=250, blank=True, null=True)
-    p_address = models.CharField('Адрес прописки', max_length=250, blank=True, null=True)
-    p_address_fact = models.CharField('Адрес фактического проживния', max_length=250, blank=True, null=True)
-
-    v_number = models.CharField('Номер', max_length=20, blank=True, null=True)
-    v_code = models.CharField('Код подразделения', max_length=20, blank=True, null=True)
-    v_issue_date = models.DateField('Дата выдачи', blank=True, null=True)
-    v_end_date = models.DateField('Дата окончания действия', blank=True, null=True)
-    v_region = models.CharField('Регион', max_length=250, blank=True, null=True)
-    v_category = models.CharField('Категория', max_length=150, blank=True, null=True)
+    series_number = models.CharField('Серия и номер', max_length=20)
+    issue_date = models.DateField('Дата выдачи')
+    issued_by = models.CharField('Кем выдан', max_length=250)
+    address = models.CharField('Адрес прописки', max_length=250)
+    address_fact = models.CharField('Адрес фактического проживния', max_length=250)
 
     created = models.DateTimeField('Дата создания', auto_now_add=True)
     updated = models.DateTimeField('Дата изменения', auto_now=True)
@@ -64,12 +57,19 @@ class Individual(models.Model):
     def get_full_name(self):
         return '{0} {1} {2}'.format(self.last_name, self.first_name, self.patronymic)
 
+    @property
+    def get_series(self):
+        return self.series_number.split()[0] if self.series_number else None
+
+    @property
+    def get_number(self):
+        return self.series_number.split()[1] if self.series_number else None
+
     def __str__(self):
         return '{0} {1} {2}'.format(self.first_name, self.last_name, self.patronymic)
 
 
-class Entity(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='entity', verbose_name='Пользователь')
+class BaseEntity(models.Model):
     inn = models.CharField('ИНН', max_length=50)
     kpp = models.CharField('КПП', max_length=50)
     e_address = models.CharField('Юридический адрес', max_length=250)
@@ -88,47 +88,29 @@ class Entity(models.Model):
 
     created = models.DateTimeField('Дата создания', auto_now_add=True)
     updated = models.DateTimeField('Дата изменения', auto_now=True)
+
+    class Meta:
+        abstract = True
+
+    @property
+    def get_full_name(self):
+        return '{0} {1} {2}'.format(self.last_name, self.first_name, self.patronymic)
+
+    def __str__(self):
+        return '{0} ({1})'.format(self.user.username, self.user.email)
+
+
+class Entity(BaseEntity):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='entity', verbose_name='Пользователь')
 
     class Meta:
         verbose_name = 'Юридичское лицо'
         verbose_name_plural = 'Юридичские лица'
 
-    @property
-    def get_full_name(self):
-        return '{0} {1} {2}'.format(self.last_name, self.first_name, self.patronymic)
 
-    def __str__(self):
-        return '{0} ({1})'.format(self.user.username, self.user.email)
-
-
-class BusinessMan(models.Model):
+class BusinessMan(BaseEntity):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='businessman', verbose_name='Пользователь')
-    inn = models.CharField('ИНН', max_length=50)
-    kpp = models.CharField('КПП', max_length=50)
-    e_address = models.CharField('Юридический адрес', max_length=250)
-    p_address = models.CharField('Почтовый адрес', max_length=250)
-
-    first_name = models.CharField('Имя', max_length=50, blank=True, null=True)
-    last_name = models.CharField('Фамилия', max_length=150, blank=True, null=True)
-    patronymic = models.CharField('Отчество', max_length=150, blank=True, null=True)
-    phone = models.CharField('Контактный телефон', max_length=20, blank=True, null=True)
-    fax = models.CharField('Факс', max_length=20, blank=True, null=True)
-
-    bank = models.CharField('Название банка', max_length=150, blank=True, null=True)
-    bik = models.CharField('БИК', max_length=50, blank=True, null=True)
-    check = models.CharField('Расчётный стёт', max_length=50, blank=True, null=True)
-    korr = models.CharField('Корр. счёт', max_length=50, blank=True, null=True)
-
-    created = models.DateTimeField('Дата создания', auto_now_add=True)
-    updated = models.DateTimeField('Дата изменения', auto_now=True)
 
     class Meta:
         verbose_name = 'Индивидуальный предприниматель'
         verbose_name_plural = 'Индивидуальные предприниматели'
-
-    @property
-    def get_full_name(self):
-        return '{0} {1} {2}'.format(self.last_name, self.first_name, self.patronymic)
-
-    def __str__(self):
-        return '{0} ({1})'.format(self.user.username, self.user.email)

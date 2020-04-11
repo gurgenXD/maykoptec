@@ -121,149 +121,63 @@
                     </div>
 
                     <div class="bg-light rounded px-4 pt-4 pb-2 mb-5">
-                        <h2 class="title-after pb-4 mb-4 h3">Удостоверяющий документ</h2>
+                        <h2 class="title-after pb-4 mb-4 h3">Паспорт</h2>
 
-                        <ul class="nav nav-pills reg-doc-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link{% if passport == 1 %} active {% endif %}" id="Passport-reg-tab" data-toggle="tab" href="#Passport-reg-pane" role="tab" aria-controls="Passport-reg-pane" aria-selected="true">Паспорт</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link{% if passport == 0 %} active {% endif %}" id="DriverCard-reg-tab" data-toggle="tab" href="#DriverCard-reg-pane" role="tab" aria-controls="DriverCard-reg-pane" aria-selected="false">Водительское удостоверение</a>
-                            </li>
-                        </ul>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-label-group smaller mb-4">
+                                    {{ individual_form.series_number }}
+                                    <label class="bg-light">Серия и номер</label>
 
-                        <div class="tab-content pt-4">
-                            <div class="tab-pane reg-doc-pane fade{% if passport == 1 %} show active {% endif %}" id="Passport-reg-pane" role="tabpanel" aria-labelledby="Passport-reg-tab">
-
-                                <div class="row">
-                                    <div class="col-lg-3">
-                                        <div class="form-label-group smaller mb-4">
-                                            {{ individual_form.p_series_number }}
-                                            <label class="bg-light">Серия и номер</label>
-
-                                            <div class="invalid-feedback">
-                                                Это обязательное поле
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="form-label-group smaller mb-4">
-                                            {{ individual_form.p_issue_date }}
-                                            <label class="bg-light">Дата выдачи</label>
-
-                                            <div class="invalid-feedback">
-                                                Это обязательное поле
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <div class="form-label-group smaller mb-4">
-                                            {{ individual_form.p_issued_by }}
-                                            <label class="bg-light">Кем выдан</label>
-
-                                            <div class="invalid-feedback">
-                                                Это обязательное поле
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-label-group smaller mb-4">
-                                            {{ individual_form.p_address }}
-                                            <label class="bg-light">Адрес прописки</label>
-
-                                            <div class="invalid-feedback">
-                                                Это обязательное поле
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <div class="form-label-group smaller mb-4">
-                                            {{ individual_form.p_address_fact }}
-                                            <label class="bg-light">Адрес фактического проживания</label>
-
-                                            <div class="invalid-feedback">
-                                                Это обязательное поле
-                                            </div>
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        Это обязательное поле
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="tab-pane reg-doc-pane fade{% if passport == 0 %} show active {% endif %}" id="DriverCard-reg-pane" role="tabpanel" aria-labelledby="DriverCard-reg-tab">
-                                <div class="row">
-                                    <div class="col-lg-3">
-                                        <div class="form-label-group smaller mb-4">
-                                            {{ individual_form.v_number }}
-                                            <label class="bg-light">Номер</label>
+                            <div class="col-lg-3">
+                                <div class="form-label-group smaller mb-4">
+                                    {{ individual_form.issue_date }}
+                                    <label class="bg-light">Дата выдачи</label>
 
-                                            <div class="invalid-feedback">
-                                                Это обязательное поле
-                                            </div>
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        Это обязательное поле
                                     </div>
+                                </div>
+                            </div>
 
-                                    <div class="col-lg-3">
-                                        <div class="form-label-group smaller mb-4">
-                                            {{ individual_form.v_code }}
-                                            <label class="bg-light">Код подразделения</label>
+                            <div class="col-lg-6">
+                                <div class="form-label-group smaller mb-4">
+                                    {{ individual_form.issued_by }}
+                                    <label class="bg-light">Кем выдан</label>
 
-                                            <div class="invalid-feedback">
-                                                Это обязательное поле
-                                            </div>
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        Это обязательное поле
                                     </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                    <div class="col-lg-3">
-                                        <div class="form-label-group smaller mb-4">
-                                            {{ individual_form.v_issue_date }}
-                                            <label class="bg-light">Дата выдачи</label>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-label-group smaller mb-4">
+                                    {{ individual_form.address }}
+                                    <label class="bg-light">Адрес прописки</label>
 
-                                            <div class="invalid-feedback">
-                                                Это обязательное поле
-                                            </div>
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        Это обязательное поле
                                     </div>
+                                </div>
+                            </div>
 
-                                    <div class="col-lg-3">
-                                        <div class="form-label-group smaller mb-4">
-                                            {{ individual_form.v_end_date }}
-                                            <label class="bg-light">Дата окончания действия</label>
+                            <div class="col-lg-6">
+                                <div class="form-label-group smaller mb-4">
+                                    {{ individual_form.address_fact }}
+                                    <label class="bg-light">Адрес фактического проживания</label>
 
-                                            <div class="invalid-feedback">
-                                                Это обязательное поле
-                                            </div>
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        Это обязательное поле
                                     </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="form-label-group smaller mb-4">
-                                            {{ individual_form.v_region }}
-                                            <label class="bg-light">Регион</label>
-
-                                            <div class="invalid-feedback">
-                                                Это обязательное поле
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-9">
-                                        <div class="pt-2 pb-2 pb-lg-0">
-                                            <span class="mr-3">Категория:</span>
-                                            {% for item in individual_form.CheckGroup %}
-                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                    {{ item.tag }}
-                                                    <label class="custom-control-label" for="{{ item.id_for_label }}">{{ item.choice_label }}</label>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -273,7 +187,7 @@
                         <div class="col-lg-8">
                             <div class="custom-control custom-checkbox mb-4">
                                 {{ individual_form.agreement }}
-                                <label class="custom-control-label" for="SNILSRegAgreementCheck">Даю согласие на обработку моих персональных данных (<a href="content.html">Федеральный закон от 27.07.2006 № 123-ФЗ “О персональных данных”</a>)</label>
+                                <label class="custom-control-label" for="SNILSRegAgreementCheck">Даю согласие на обработку моих персональных данных (<a href="/personal-data/">Федеральный закон от 27.07.2006 № 123-ФЗ “О персональных данных”</a>)</label>
                             </div>
                         </div>   
 
@@ -445,7 +359,7 @@
                         <div class="col-lg-8">
                             <div class="custom-control custom-checkbox mb-4">
                                 {{ entity_form.agreement }}
-                                <label class="custom-control-label" for="OGRNRegAgreementCheck">Даю согласие на обработку моих персональных данных (<a href="content.html">Федеральный закон от 27.07.2006 № 123-ФЗ “О персональных данных”</a>)</label>
+                                <label class="custom-control-label" for="OGRNRegAgreementCheck">Даю согласие на обработку моих персональных данных (<a href="/personal-data/">Федеральный закон от 27.07.2006 № 123-ФЗ “О персональных данных”</a>)</label>
                             </div>
                         </div>   
 
@@ -617,7 +531,7 @@
                         <div class="col-lg-8">
                             <div class="custom-control custom-checkbox mb-4">
                                 {{ businessman_form.agreement }}
-                                <label class="custom-control-label" for="OGRNIPRegAgreementCheck">Даю согласие на обработку моих персональных данных (<a href="content.html">Федеральный закон от 27.07.2006 № 123-ФЗ “О персональных данных”</a>)</label>
+                                <label class="custom-control-label" for="OGRNIPRegAgreementCheck">Даю согласие на обработку моих персональных данных (<a href="/personal-data/">Федеральный закон от 27.07.2006 № 123-ФЗ “О персональных данных”</a>)</label>
                             </div>
                         </div>   
 

@@ -81,17 +81,6 @@ class BusinessManSignInForm(forms.ModelForm):
 
 
 class IndividualSignUpForm(forms.Form):
-    CATEGORIES = [
-        ('a', 'A'),
-        ('b', 'B'),
-        ('c', 'C'),
-        ('d', 'D'),
-        ('be', 'BE'),
-        ('ce', 'CE'),
-        ('tm', 'Tm'),
-        ('rb', 'Tb'),
-    ]
-
     username = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'i1-username', 'class': 'form-control SNILS-input', 'placeholder': 'СНИЛС'}))
     password1 = forms.CharField(required=True, widget=forms.PasswordInput(attrs={'id': 'i-password1', 'class': 'form-control', 'placeholder': 'Пароль'}))
     password2 = forms.CharField(required=True, widget=forms.PasswordInput(attrs={'id': 'i-password2', 'class': 'form-control', 'placeholder': 'Подтверждение пароля'}))
@@ -101,18 +90,12 @@ class IndividualSignUpForm(forms.Form):
     phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'i-phone', 'class': 'form-control PHONE-input', 'placeholder': 'Контактный телефон'}))
     email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'id': 'i-email', 'class': 'form-control', 'placeholder': 'Электронная почта'}))
 
-    p_series_number = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-p_series_number', 'class': 'form-control PASSPORTNUMBER-input', 'placeholder': 'Серия и номер'}))
-    p_issue_date = forms.DateField(required=False, widget=forms.TextInput(attrs={'id': 'i-p_issue_date', 'class': 'form-control DATE-input', 'placeholder': 'Дата выдачи'}))
-    p_issued_by = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-p_issued_by', 'class': 'form-control', 'placeholder': 'Кем выдан'}))
-    p_address = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-p_address', 'class': 'form-control', 'placeholder': 'Адрес прописки'}))
-    p_address_fact = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-p_address_fact', 'class': 'form-control', 'placeholder': 'Адрес фактического проживания'}))
+    series_number = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'i-series_number', 'class': 'form-control PASSPORTNUMBER-input', 'placeholder': 'Серия и номер'}))
+    issue_date = forms.DateField(required=True, widget=forms.TextInput(attrs={'id': 'i-issue_date', 'class': 'form-control DATE-input', 'placeholder': 'Дата выдачи'}))
+    issued_by = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'i-issued_by', 'class': 'form-control', 'placeholder': 'Кем выдан'}))
+    address = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'i-address', 'class': 'form-control', 'placeholder': 'Адрес прописки'}))
+    address_fact = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'i-address_fact', 'class': 'form-control', 'placeholder': 'Адрес фактического проживания'}))
 
-    v_number = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-v_number', 'class': 'form-control DRIVERCARDNUMBER-input', 'placeholder': 'Номер'}))
-    v_code = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-v_code', 'class': 'form-control DRIVERCARDGIBDD-input', 'placeholder': 'Код подразделения'}))
-    v_issue_date = forms.DateField(required=False, widget=forms.TextInput(attrs={'id': 'i-v_issue_date', 'class': 'form-control DATE-input', 'placeholder': 'Дата выдачи'}))
-    v_end_date = forms.DateField(required=False, widget=forms.TextInput(attrs={'id': 'i-v_end_date', 'class': 'form-control DATE-input', 'placeholder': 'Дата окончания действия'}))
-    v_region = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-v_region', 'class': 'form-control', 'placeholder': 'Регион'}))
-    CheckGroup = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple(attrs={'class': 'custom-control-input'}), choices=CATEGORIES)
     agreement = forms.BooleanField(required=True, widget=forms.CheckboxInput(attrs={'class': 'custom-control-input', 'id': 'SNILSRegAgreementCheck'}))
 
     def clean_username(self):
@@ -154,26 +137,18 @@ class IndividualSignUpForm(forms.Form):
                 first_name=self.cleaned_data['first_name'],
                 patronymic=self.cleaned_data['patronymic'],
                 phone=self.cleaned_data['phone'],
-                p_series_number=self.cleaned_data['p_series_number'],
-                p_issue_date=self.cleaned_data['p_issue_date'],
-                p_issued_by=self.cleaned_data['p_issued_by'],
-                p_address=self.cleaned_data['p_address'],
-                p_address_fact=self.cleaned_data['p_address_fact'],
-                v_number= self.cleaned_data['v_number'],
-                v_code=self.cleaned_data['v_code'],
-                v_issue_date=self.cleaned_data['v_issue_date'],
-                v_end_date=self.cleaned_data['v_end_date'],
-                v_region=self.cleaned_data['v_region'],
-                v_category=', '.join(self.cleaned_data['CheckGroup']),
+                series_number=self.cleaned_data['series_number'],
+                issue_date=self.cleaned_data['issue_date'],
+                issued_by=self.cleaned_data['issued_by'],
+                address=self.cleaned_data['address'],
+                address_fact=self.cleaned_data['address_fact'],
             )
         except:
             user.delete()
         else:
             return user
 
-
-class EntitySignUpForm(forms.Form):
-    username = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'e1-username', 'class': 'form-control OGRN-input', 'placeholder': 'ОГРН'}))
+class BaseEntitySignUpForm(forms.Form):
     password1 = forms.CharField(required=True, widget=forms.PasswordInput(attrs={'id': 'e-password1', 'class': 'form-control', 'placeholder': 'Пароль'}))
     password2 = forms.CharField(required=True, widget=forms.PasswordInput(attrs={'id': 'e-password2', 'class': 'form-control', 'placeholder': 'Подтверждение пароля'}))
     email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'id': 'e-email', 'class': 'form-control', 'placeholder': 'Электронная почта'}))
@@ -196,13 +171,6 @@ class EntitySignUpForm(forms.Form):
 
     agreement = forms.BooleanField(required=True, widget=forms.CheckboxInput(attrs={'class': 'custom-control-input', 'id': 'OGRNRegAgreementCheck'}))
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        username = re.sub(r'\D', '', username)
-        if User.objects.filter(username=username).exists():
-            raise forms.ValidationError('Пользователь с таким логином уже существует')
-        return username
-
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
@@ -218,6 +186,17 @@ class EntitySignUpForm(forms.Form):
             password_validation.validate_password(password2)
         return password2
 
+
+class EntitySignUpForm(BaseEntitySignUpForm):
+    username = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'e1-username', 'class': 'form-control OGRN-input', 'placeholder': 'ОГРН'}))
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        username = re.sub(r'\D', '', username)
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError('Пользователь с таким логином уже существует')
+        return username
+
     def save(self):
         user = User.objects.create(
             username=self.cleaned_data['username'],
@@ -229,7 +208,7 @@ class EntitySignUpForm(forms.Form):
         user.save()
 
         try:
-            user_info = Entity.objects.create(
+            Entity.objects.create(
                 user=user,
                 inn=self.cleaned_data['inn'],
                 kpp=self.cleaned_data['kpp'],
@@ -251,29 +230,8 @@ class EntitySignUpForm(forms.Form):
             return user
 
 
-class BusinessManSignUpForm(forms.Form):
+class BusinessManSignUpForm(BaseEntitySignUpForm):
     username = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'b1-username', 'class': 'form-control OGRNIP-input', 'placeholder': 'ОГРН'}))
-    password1 = forms.CharField(required=True, widget=forms.PasswordInput(attrs={'id': 'b-password1', 'class': 'form-control', 'placeholder': 'Пароль'}))
-    password2 = forms.CharField(required=True, widget=forms.PasswordInput(attrs={'id': 'b-password2', 'class': 'form-control', 'placeholder': 'Подтверждение пароля'}))
-    email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'id': 'b-email', 'class': 'form-control', 'placeholder': 'Электронная почта'}))
-
-    inn = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'b-inn', 'class': 'form-control INN-input', 'placeholder': 'ИНН'}))
-    kpp = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'b-kpp', 'class': 'form-control KPP-input', 'placeholder': 'КПП'}))
-    e_address = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'b-e_address', 'class': 'form-control', 'placeholder': 'Юридический адрес'}))
-    p_address = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'b-p_address', 'class': 'form-control', 'placeholder': 'Почтовый адрес'}))
-
-    last_name = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'b-last_name', 'class': 'form-control', 'placeholder': 'Фамилия'}))
-    first_name = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'b-first_name', 'class': 'form-control', 'placeholder': 'Имя'}))
-    patronymic = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'b-patronymic', 'class': 'form-control', 'placeholder': 'Отчество'}))
-    phone = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'b-phone', 'class': 'form-control PHONE-input', 'placeholder': 'Контактный телефон'}))
-    fax = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'b-fax', 'class': 'form-control PHONE-input', 'placeholder': 'Факс'}))
-
-    bank = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'b-bank', 'class': 'form-control', 'placeholder': 'Название банка'}))
-    bik = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'b-bik', 'class': 'form-control', 'placeholder BIK-input': 'БИК'}))
-    check = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'b-check', 'class': 'form-control', 'placeholder RASCH-input': 'Расчётный счёт'}))
-    korr = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'b-korr', 'class': 'form-control', 'placeholder KORR-input': 'Корр. счёт'}))
-
-    agreement = forms.BooleanField(required=True, widget=forms.CheckboxInput(attrs={'class': 'custom-control-input', 'id': 'OGRNIPRegAgreementCheck'}))
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -281,21 +239,6 @@ class BusinessManSignUpForm(forms.Form):
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError('Пользователь с таким логином уже существует')
         return username
-
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError('Пользователь с такой электронной почтой уже существует')
-        return email
-    
-    def clean_password2(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
-        if password1 != password2:
-            raise forms.ValidationError('Пароли не совпадают')
-        if password2:
-            password_validation.validate_password(password2)
-        return password2
 
     def save(self):
         user = User.objects.create(
@@ -353,7 +296,6 @@ class CustomPasswordResetForm(PasswordResetForm):
         if html_email_template_name is not None:
             html_email = loader.render_to_string(html_email_template_name, context)
             email_message.attach_alternative(html_email, 'text/html')
-
         email_message.send()
 
 
@@ -369,17 +311,6 @@ class ChangePasswordForm(PasswordChangeForm):
 
 
 class IndividualUpdateForm(forms.Form):
-    CATEGORIES = [
-        ('a', 'A'),
-        ('b', 'B'),
-        ('c', 'C'),
-        ('d', 'D'),
-        ('be', 'BE'),
-        ('ce', 'CE'),
-        ('tm', 'Tm'),
-        ('rb', 'Tb'),
-    ]
-
     def __init__(self, user, *args, **kwargs):
         super(IndividualUpdateForm, self).__init__(*args, **kwargs)
         self.user = user
@@ -391,19 +322,11 @@ class IndividualUpdateForm(forms.Form):
         self.fields['phone'] = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'i-phone', 'class': 'form-control PHONE-input', 'placeholder': 'Контактный телефон', 'value': self.user_info.phone}))
         self.fields['email'] = forms.EmailField(required=True, widget=forms.TextInput(attrs={'id': 'i-email', 'class': 'form-control', 'placeholder': 'Электронная почта', 'value': self.user.email}))
 
-        self.fields['p_series_number'] = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-p_series_number', 'class': 'form-control PASSPORTNUMBER-input', 'placeholder': 'Серия и номер', 'value': self.user_info.p_series_number}))
-        self.fields['p_issue_date'] = forms.DateField(required=False, widget=forms.TextInput(attrs={'id': 'i-p_issue_date', 'class': 'form-control DATE-input', 'placeholder': 'Дата выдачи', 'value': self.user_info.p_issue_date.strftime('%d.%m.%Y')}))
-        self.fields['p_issued_by'] = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-p_issued_by', 'class': 'form-control', 'placeholder': 'Кем выдан', 'value': self.user_info.p_issued_by}))
-        self.fields['p_address'] = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-p_address', 'class': 'form-control', 'placeholder': 'Адрес прописки', 'value': self.user_info.p_address}))
-        self.fields['p_address_fact'] = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-p_address_fact', 'class': 'form-control', 'placeholder': 'Адрес фактического проживания', 'value': self.user_info.p_address_fact}))
-
-        self.fields['v_number'] = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-v_number', 'class': 'form-control DRIVERCARDNUMBER-input', 'placeholder': 'Номер', 'value': self.user_info.v_number}))
-        self.fields['v_code'] = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-v_code', 'class': 'form-control DRIVERCARDGIBDD-input', 'placeholder': 'Код подразделения', 'value': self.user_info.v_code}))
-        self.fields['v_issue_date'] = forms.DateField(required=False, widget=forms.TextInput(attrs={'id': 'i-v_issue_date', 'class': 'form-control DATE-input', 'placeholder': 'Дата выдачи', 'value': self.user_info.v_issue_date.strftime('%d.%m.%Y')}))
-        self.fields['v_end_date'] = forms.DateField(required=False, widget=forms.TextInput(attrs={'id': 'i-v_end_date', 'class': 'form-control DATE-input', 'placeholder': 'Дата окончания действия', 'value': self.user_info.v_end_date.strftime('%d.%m.%Y')}))
-        self.fields['v_region'] = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'i-v_region', 'class': 'form-control', 'placeholder': 'Регион', 'value': self.user_info.v_region}))
-        self.fields['CheckGroup'] = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple(attrs={'class': 'custom-control-input'}), choices=self.CATEGORIES)
-        self.fields['CheckGroup'].initial = self.user_info.v_category.split(', ')
+        self.fields['series_number'] = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'i-series_number', 'class': 'form-control PASSPORTNUMBER-input', 'placeholder': 'Серия и номер', 'value': self.user_info.series_number}))
+        self.fields['issue_date'] = forms.DateField(required=True, widget=forms.TextInput(attrs={'id': 'i-issue_date', 'class': 'form-control DATE-input', 'placeholder': 'Дата выдачи', 'value': self.user_info.issue_date.strftime('%d.%m.%Y')}))
+        self.fields['issued_by'] = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'i-issued_by', 'class': 'form-control', 'placeholder': 'Кем выдан', 'value': self.user_info.issued_by}))
+        self.fields['address'] = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'i-address', 'class': 'form-control', 'placeholder': 'Адрес прописки', 'value': self.user_info.address}))
+        self.fields['address_fact'] = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'i-address_fact', 'class': 'form-control', 'placeholder': 'Адрес фактического проживания', 'value': self.user_info.address_fact}))
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -418,12 +341,6 @@ class IndividualUpdateForm(forms.Form):
             raise forms.ValidationError('Пользователь с такой электронной почтой уже существует')
         return email
 
-    def clean(self):
-        if (not all((self.cleaned_data['p_series_number'], self.cleaned_data['p_issue_date'], self.cleaned_data['p_issued_by'], self.cleaned_data['p_address'], self.cleaned_data['p_address_fact']))
-            and not all((self.cleaned_data['v_number'], self.cleaned_data['v_code'], self.cleaned_data['v_issue_date'], self.cleaned_data['v_end_date'], self.cleaned_data['v_region'], self.cleaned_data['CheckGroup']))):
-            raise forms.ValidationError('Введите данные паспорта или водительских прав')
-
-
     def save(self):
         self.user.username=self.cleaned_data['username']
         self.user.save()
@@ -433,18 +350,11 @@ class IndividualUpdateForm(forms.Form):
         self.user_info.patronymic=self.cleaned_data['patronymic']
         self.user_info.phone=self.cleaned_data['phone']
 
-        self.user_info.p_series_number=self.cleaned_data['p_series_number']
-        self.user_info.p_issue_date=self.cleaned_data['p_issue_date']
-        self.user_info.p_issued_by=self.cleaned_data['p_issued_by']
-        self.user_info.p_address=self.cleaned_data['p_address']
-        self.user_info.p_address_fact=self.cleaned_data['p_address_fact']
-
-        self.user_info.v_number= self.cleaned_data['v_number']
-        self.user_info.v_code=self.cleaned_data['v_code']
-        self.user_info.v_issue_date=self.cleaned_data['v_issue_date']
-        self.user_info.v_end_date=self.cleaned_data['v_end_date']
-        self.user_info.v_region=self.cleaned_data['v_region']
-        self.user_info.v_category=', '.join(self.cleaned_data['CheckGroup'])
+        self.user_info.series_number=self.cleaned_data['series_number']
+        self.user_info.issue_date=self.cleaned_data['issue_date']
+        self.user_info.issued_by=self.cleaned_data['issued_by']
+        self.user_info.address=self.cleaned_data['address']
+        self.user_info.address_fact=self.cleaned_data['address_fact']
 
         self.user_info.save()
 

@@ -29,10 +29,7 @@ class IndividualAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('user', 'first_name', 'last_name', 'patronymic', 'phone')}),
         ('Паспорт', {
-            'fields': ('p_series_number', 'p_issue_date', 'p_issued_by', 'p_address', 'p_address_fact')
-        }),
-        ('Водительские права', {
-            'fields': ('v_number', 'v_code', 'v_issue_date', 'v_end_date', 'v_region', 'v_category'),
+            'fields': ('series_number', 'issue_date', 'issued_by', 'address', 'address_fact')
         }),
     )
 

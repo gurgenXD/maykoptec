@@ -6,8 +6,9 @@ from django.dispatch import receiver
 from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
-from core.models import MailToString, MailFromString
+from core.models import MailFromString
 from django.urls import reverse
+from uuid import uuid1
 
 
 class ReqApp(models.Model):
@@ -68,8 +69,7 @@ class ReqApp(models.Model):
     reason = models.CharField('Причина подачи заявления', max_length=250, choices=REASONS, default='r1')
     points_count = models.TextField('Количество точек присоединения к электрической сети с указанием технических параметров элементов энергопринимающих устройст (класс напряжения и др.)')
     load_type = models.TextField('Характер нагрузки (вид экономической деятельности хозяйствующего субъекта)')
-    file1 = models.FileField('Название документа', upload_to='requests/', max_length=150, null=True, blank=True)
-    file2 = models.FileField('Название другого документа', upload_to='requests/', max_length=150, null=True, blank=True)
+    pdf = models.FileField('Сгенерированный PDF', upload_to='requests/pdf/', max_length=150, null=True, blank=True)
 
     created = models.DateTimeField('Дата создания', auto_now_add=True)
     updated = models.DateTimeField('Дата изменения', auto_now=True)
@@ -77,7 +77,7 @@ class ReqApp(models.Model):
     class Meta:
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'
-        ordering = ('created',)
+        ordering = ('-created',)
 
     def get_absolute_url(self):
         return reverse('update_request', args=[self.id])
@@ -106,20 +106,40 @@ class ReqApp(models.Model):
 
 @receiver(pre_save, sender=ReqApp, dispatch_uid="send_email")
 def send_email(sender, instance, **kwargs):
-    old = ReqApp.objects.get(pk=instance.pk)
-    if old.status != instance.status:
-        current_site = Site.objects.get_current()
-        mail_subject = 'Изменен статус: ' + current_site.domain
-        message = render_to_string('requests/change-status-message.html', {
-            'domain': current_site.domain,
-            'id': instance.id,
-            'old': old,
-            'new': instance,
-        })
-        to_email = old.user.email
-        from_email = MailFromString.objects.first().host_user
-        email = EmailMessage(mail_subject, message, from_email=from_email, to=[to_email])
-        email.send()
+    if ReqApp.objects.filter(pk=instance.pk).exists():
+        old = ReqApp.objects.get(pk=instance.pk)
+        if old.status != instance.status:
+            current_site = Site.objects.get_current()
+            mail_subject = 'Изменен статус: ' + current_site.domain
+            message = render_to_string('requests/change-status-message.html', {
+                'domain': current_site.domain,
+                'id': instance.id,
+                'old': old,
+                'new': instance,
+            })
+            to_email = old.user.email
+            from_email = MailFromString.objects.first().host_user
+            email = EmailMessage(mail_subject, message, from_email=from_email, to=[to_email])
+            email.send()
+
+
+class ReqDocuments(models.Model):
+    req = models.ForeignKey(ReqApp, on_delete=models.CASCADE, verbose_name='Заявка', related_name='documents')
+    title = models.CharField(max_length=250, verbose_name='Название')
+
+    def get_document_url(self, filename):
+        ext = filename.split('.')[-1]
+        filename = '{0}.{1}'.format(uuid1(), ext)
+        return 'req/documents/{0}'.format(filename)
+
+    document = models.FileField(upload_to=get_document_url, max_length=250, verbose_name='Файл')
+
+    class Meta:
+        verbose_name = 'Документ'
+        verbose_name_plural = 'Документы'
+
+    def __str__(self):
+        return self.title
 
 
 class ChatMessage(models.Model):

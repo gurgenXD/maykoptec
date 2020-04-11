@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: PTSerif;
+            src: url(E:\Goga\PycharmProjects\maykoptec\templates\pdf\fonts\PTSerif-Regular.ttf);
+        }
+        @font-face {
+            font-family: PTSerif;
+            font-weight: bold;
+            src: url(E:\Goga\PycharmProjects\maykoptec\templates\pdf\fonts\PTSerif-Bold.ttf);
+        }
+        body {
+            font-family: PTSerif;
+            font-size: 13px;
+        }
+        .top {
+            text-align: right;
+            font-weight: bold;
+            padding: 0;
+            margin: 0;
+        }
+        .center {
+            text-align: center;
+            font-weight: bold;
+            padding: 0;
+            margin: 0;
+        }
+        .under_text {
+            font-size: 9px;
+        }
+        .w-text {
+            color: #ffffff;
+        }
+        table, td {
+            border: 1px solid black;
+            padding: 0;
+            margin: 0;
+        }
+
+        table tbody td {
+            height: 20px;
+        }
+
+        .th {
+            font-size: 10px;
+            height: 100px;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+        }
+        .sub-ol {
+            list-style-type: lower-alpha;
+        }
+    </style>
+</head>
+<body>
+    <p class="top"><b>Генеральному директору</b></p>
+    <p class="top"><b>ООО «Майкопская ТЭЦ»</b></p>
+    <p class="top"><b>Луневу И.А.</b></p>
+    <br>
+    <p class="center">
+        ЗАЯВКА<br>
+        физического лица на присоединение по одному источнику<br>
+        электроснабжения энергопринимающих устройств с максимальной<br>
+        мощностью до 15 кВт включительно (используемых для бытовых<br>
+        и иных нужд, не связанных с осуществлением<br>
+        предпринимательской деятельности)<br>
+    </p>
+    <br>
+
+    <ol>
+        <li><u>{{ req.user.individual.get_full_name }}</u></li>
+        <li>Паспортные данные:
+            серия: <u>{{ req.user.individual.get_series }}</u>,
+            номер: <u>{{ req.user.individual.get_number }}</u>,
+            выдан (кем, когда): <u>{{ req.user.individual.issued_by }}</u>
+            <u>{{ req.user.individual.issue_date|date:"d.m.Y" }}</u>
+        </li>
+        <li>Зарегистрирован(а):
+            <u>{{ req.user.individual.address }}</u>
+        </li>
+        <li>Фактический адрес проживания:
+            <u>{{ req.user.individual.address_fact }}</u>
+        </li>
+        <li>В связи с
+            <u>{{ req.get_reason_display }}</u>
+            просит осуществить технологическое присоединение
+            <u>{{ req.get_device_type_display }}</u>
+            расположенных
+            <u>{{ req.address }}</u>
+        </li>
+        <li>Максимальная мощность энергопринимающих устройств (присоединяемых и ранее присоединенных) составляет
+            <u>{{ req.max_power }} кВт</u> при напряжении
+            <u>{{ req.get_voltage_lvl_display }}</u>, в том числе:
+            <ol class="sub-ol">
+                <li>максимальная мощность присоединяемых  энергопринимающих устройств составляет
+                    <u>{{ req.max_power }} кВт</u> при напряжении
+                    <u>{{ req.get_voltage_lvl_display }}</u>;
+                </li>
+                <li>максимальная мощность ранее присоединенных в данной точке присоединения энергопринимающих устройств составляет
+                    __________ кВт при напряжении
+                    __________ кВ.
+                </li>
+            </ol>
+        </li>
+        <li>Заявляемая категория надежности энергопринимающих устройств —
+            <u>{{ req.get_reliasbility_lvl_display }}</u>.
+            (по одному источнику электроснабжения энергопринимающих устройств).
+        </li>
+        <li>Сроки проектирования и поэтапного введения в эксплуатацию объекта (в том числе по этапам и очередям):
+            <table>
+                <tr>
+                    <td>Этап (очередь) строительства</td>
+                    <td class="th">Планируемый срок проектирования энергопринимающих устройств в эксплуатацию (месяц, год)</td>
+                    <td class="th">Планируемый срок введения энергопринимающих устройств в эксплуатацию (месяц, год)</td>
+                    <td class="th">Максимальная мощность энергопринимающих устройств (кВт)</td>
+                    <td class="th">Категория надежности энергопринимающих устройств</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </li>
+        <br>
+        <li>Гарантирующий поставщик (энергосбытовая организация), с которым планируется
+            заключение договора энергоснабжения (купли-продажи электрической энергии (мощности))
+            _________________________________________________________.
+        </li>
+    </ol>
+    <br>
+    <ul>
+        <li>Заявитель</li>
+        <li><u>{{ req.user.individual.get_full_name }}</u></li>
+        <li><u>{{ req.user.individual.phone }}</u></li>
+        <li>___________________________ __________</li>
+        <li class="under_text"><span class="w-text">____________</span>(должность)<span class="w-text">________________</span>(подпись)</li>
+        <li>&laquo;____&raquo;________________20_____г.</li>
+        <li>м.п.</li>
+    </ul>
+    <br><br>
+    <ul>
+        <li>Приложения:</li>
+        <li>(указать перечень прилагаемых документов)</li>
+        <li>
+            <ol>
+                {% for doc in req.documents.all %}
+                <li><u>{{ doc.title }}</u></li>
+                {% endfor %}
+                <li>_______________________________________________________________________________________________________________________</li>
+                <li>_______________________________________________________________________________________________________________________</li>
+            </ol>
+        </li>
+        <br>
+        <li>
+            В соответствии с Федеральным законом №152-ФЗ от 27 июля 2006 г. «О персональных данных» ООО «Майкопская ТЭЦ» является оператором и осуществляет обработку персональных данных Заявителей. Оформляя Заявку в ООО «Майкопская ТЭЦ», Вы даете согласие на обработку Ваших персональных данных любым, не запрещенным способом.
+        </li>
+        <br>
+        <li>_________________________________________________________________________/_____________________/</li>
+        <li class="under_text"><span class="w-text">_________________________________________________</span>ФИО<span class="w-text">______________________________________________________________</span>подпись</li>
+        <br><br>
+        <li>Документы сдал__________________________________________________</li>
+        <li>Документы принял_______________________________________________</li>
+    </ul>
+</body>
+</html>

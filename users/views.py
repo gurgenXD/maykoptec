@@ -57,7 +57,6 @@ class SignUpView(View):
             'entity_form': entity_form,
             'businessman_form': businessman_form,
             'tab': 1,
-            'passport': 1,
         }
         return render(request, 'users/signup.html', context)
 
@@ -73,23 +72,11 @@ class IndividualSignUpView(View):
             send_mail(request, new_user)
             return render(request, 'users/signup-confirm.html')
 
-        if (individual_form.cleaned_data['p_series_number'] and
-            individual_form.cleaned_data['p_issue_date'] and
-            individual_form.cleaned_data['p_issued_by']):
-            passport = 1
-        elif (individual_form.cleaned_data['v_number'] and
-            individual_form.cleaned_data['v_code'] and
-            individual_form.cleaned_data['v_issue_date']):
-            passport = 0
-        else:
-            passport = 1
-
         context = {
             'individual_form': individual_form,
             'entity_form': entity_form,
             'businessman_form': businessman_form,
             'tab': 1,
-            'passport': passport,
         }
         return render(request, 'users/signup.html', context)
 

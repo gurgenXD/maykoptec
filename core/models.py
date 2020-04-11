@@ -32,6 +32,12 @@ class Position(models.Model):
 
 
 class MailToString(models.Model):
+    EMAIL_TYPES = [
+        ('req', 'Для заявок'),
+        ('all', 'Для остального'),
+    ]
+
+    email_type = models.CharField(max_length=250, choices=EMAIL_TYPES, verbose_name='Тип email')
     email = models.EmailField(max_length=250, verbose_name='E-mail')
 
     class Meta:
@@ -78,10 +84,11 @@ class Index(models.Model):
     about = models.TextField(verbose_name='О нас')
     phone = models.ForeignKey(Phone, on_delete=models.CASCADE, verbose_name='Телефон в меню')
     koef = models.DecimalField('Коэффициет калькулятора', max_digits=11, decimal_places=2)
+    file = models.FileField('Список документов', upload_to='doc_list/', max_length=150)
 
     class Meta:
-        verbose_name = 'Главная страница'
-        verbose_name_plural = 'Главная страница'
+        verbose_name = 'Статические элементы'
+        verbose_name_plural = 'Статические элементы'
 
     def __str__(self):
-        return 'Главная страница №{0}'.format(self.id)
+        return 'Статические элементы №{0}'.format(self.id)

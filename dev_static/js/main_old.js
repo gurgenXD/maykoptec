@@ -133,6 +133,8 @@ jQuery(function($){
     $(".PHONE-input").mask("+7 (999) 999-99-99",{placeholder:"_"});
     $(".PASSPORTNUMBER-input").mask("9999 999999",{placeholder:"_"});
     $(".DATE-input").mask("99.99.9999",{placeholder:"дд.мм.гггг"});
+    $(".DRIVERCARDNUMBER-input").mask("9999 999999",{placeholder:"_"});
+    $(".DRIVERCARDGIBDD-input").mask("ГИБДД 9999",{placeholder:"_"});
     $(".INN-input").mask("9999999999",{placeholder:""});
     $(".KPP-input").mask("999999999",{placeholder:""});
     $(".BIK-input").mask("999999999",{placeholder:""});
@@ -141,8 +143,19 @@ jQuery(function($){
 });
 
 $(document).ready(function() {
+    $('.reg-doc-tabs a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+        var activepane = $(e.target).attr("href");
+
+        $('.reg-doc-pane input, .reg-doc-pane textarea').prop('required',false);
+
+        $(activepane).find('input, textarea').prop('required',true);
+    });
+});
+
+$(document).ready(function() {
     $('.calc-input').on('keyup change blur', function() {
-        var number = parseFloat($(this).val())*800.87;
+        var koef = parseFloat($(this).data('koef'));
+        var number = parseFloat($(this).val())*koef;
 
         number = number || 0;
         $('.calc-result').text(number.toFixed(2));
@@ -216,20 +229,3 @@ $('.custom-file-input').on('change',function(){
     //replace the "Choose a file" label
     $(this).next('.custom-file-label').html(cleanFileName);
 })
-
-$(document).ready(function(){
-    var i=1;
-    $("#add_custom_doc").click(function(){
-        $('#custom_doc'+i).html('<div class="mb-5"><div class="form-label-group smaller mb-3"><input type="text" name="doc_'+i+'_name" class="form-control" placeholder="Название документа" required><label class="bg-light">Название документа</label></div><div class="input-group"><div class="custom-file"><input type="file" name="doc_'+i+'" class="custom-file-input" required><label class="custom-file-label bg-light">Скан документа</label></div></div></div>');
-
-        $('#custom_docs').append('<div id="custom_doc'+(i+1)+'"></div>');
-        i++; 
-    });
-    $("#delete_custom_doc").click(function(){
-        if(i>1){
-            $("#custom_doc"+(i-1)).html('');
-            i--;
-        }
-    });
-
-});
