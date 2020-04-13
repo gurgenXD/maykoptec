@@ -11,6 +11,8 @@ from core.models import MailToString, MailFromString
 class FeedBackView(View):
     def get(self, request):
         user = request.user
+        user_info = None
+
         if user.user_type == 'individual':
             user_info = user.individual
         if user.user_type == 'entity':
@@ -18,11 +20,14 @@ class FeedBackView(View):
         if user.user_type == 'businessman':
             user_info = user.businessman
 
-        feedback_form = FeedBackForm(initial={
-            'name': user_info.get_full_name,
-            'phone': user_info.phone,
-            'email': user.email,
-        })
+        if user_info:
+            feedback_form = FeedBackForm(initial={
+                'name': user_info.get_full_name,
+                'phone': user_info.phone,
+                'email': user.email,
+            })
+        else:
+            feedback_form = FeedBackForm()
 
         context = {
             'feedback_form': feedback_form,

@@ -19,7 +19,6 @@
 
     <div class="container py-5">
         <div class="row">
-            {% if user.user_type %}
             <div class="col-lg-8 mb-5 mb-lg-0">
                 <form class="needs-validation" enctype="multipart/form-data" novalidate method="POST" action="{% url 'feedback' %}">
                     {% csrf_token %}
@@ -91,7 +90,6 @@
                 {% endif %}
 
             </div>
-            {% endif %}
 
             {% include '__right-menu.html' %}
         </div>
