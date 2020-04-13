@@ -41,11 +41,7 @@
                 <div class="col-lg-4 px-4">
                     <div class="function-card bg-white rounded px-4 py-5 text-center mb-4 mb-lg-0">
                         <img src="{% static 'images/function-card-icon-2.png' %}" alt="" class="mb-4">
-                        {% if user.is_authenticated %}
                         <a href="{% url 'feedback' %}" title="" class="d-block stretched-link h4 text-dark">Интернет-приёмная</a>
-                        {% else %}
-                        <a href="#" title="" class="d-block stretched-link h4 text-dark" role="button" data-toggle="modal" data-target="#SignInModal">Интернет-приёмная</a>
-                        {% endif %}
                         <p class="mb-0 smaller text-muted">Задайте вопрос о деятельности "Майкопская ТЭЦ"</p>
                     </div>
                 </div>

@@ -53,11 +53,7 @@
                             <img src="{% static 'images/function-card-icon-2.png' %}" alt="" class="mr-3">
                         </div>
                         <div>
-                            {% if user.is_authenticated %}
-                            <a href="{% url 'feedback' %}" title="" class="d-block stretched-link h4 text-dark mb-1"">Интернет-приёмная</a>
-                            {% else %}
-                            <a href="#" title="" class="d-block stretched-link h4 text-dark mb-1" role="button" data-toggle="modal" data-target="#SignInModal">Интернет-приёмная</a>
-                            {% endif %}
+                            <a href="{% url 'feedback' %}" title="" class="d-block stretched-link h6 text-dark mb-1">Интернет-приёмная</a>
                             <p class="mb-0 small text-muted">Задайте вопрос о деятельности "Майкопская ТЭЦ"</p>
                         </div>
                     </div>

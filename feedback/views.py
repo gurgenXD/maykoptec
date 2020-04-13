@@ -10,15 +10,17 @@ from core.models import MailToString, MailFromString
 
 class FeedBackView(View):
     def get(self, request):
-        user = request.user
         user_info = None
 
-        if user.user_type == 'individual':
-            user_info = user.individual
-        if user.user_type == 'entity':
-            user_info = user.entity
-        if user.user_type == 'businessman':
-            user_info = user.businessman
+        if request.user:
+            user = request.user
+
+            if user.user_type == 'individual':
+                user_info = user.individual
+            if user.user_type == 'entity':
+                user_info = user.entity
+            if user.user_type == 'businessman':
+                user_info = user.businessman
 
         if user_info:
             feedback_form = FeedBackForm(initial={
