@@ -17,7 +17,11 @@
                     <h2 class="text-white text-uppercase">{{ index.title }}</h2>
                     <p class="text-white mb-5">{{ index.title_text|striptags }}</p>
                     <a href="{% url 'signup' %}" title="" class="btn btn-primary btn-lg mr-4 mb-3">Присоединиться к сети</a>
+                    {% if user.is_authenticated %}
                     <a href="{% url 'profile' %}" title="" class="btn btn-light btn-lg mb-3">Узнать статус заявки</a>
+                    {% else %}
+                    <a href="#" title="" class="btn btn-light btn-lg mb-3" role="button" data-toggle="modal" data-target="#SignInModal">Узнать статус заявки</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
