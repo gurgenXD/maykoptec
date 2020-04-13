@@ -10,11 +10,10 @@ from core.models import MailToString, MailFromString
 
 class FeedBackView(View):
     def get(self, request):
+        user = request.user
         user_info = None
 
-        if request.user:
-            user = request.user
-
+        if user.is_authenticated:
             if user.user_type == 'individual':
                 user_info = user.individual
             if user.user_type == 'entity':

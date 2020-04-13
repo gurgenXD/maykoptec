@@ -156,6 +156,8 @@ class ChangeEmailView(View):
 
 class LogoutView(View):
     def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/')
         logout(request)
         return redirect('/')
 
@@ -183,6 +185,8 @@ class SignInView(View):
 
 class ProfileInfoView(View):
     def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/')
         user = request.user
         change_pass_form = ChangePasswordForm(user)
 
@@ -211,6 +215,8 @@ class ProfileInfoView(View):
 
 class ChangePasswordView(View):
     def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/')
         user = request.user
         change_pass_form = ChangePasswordForm(user, request.POST)
 
@@ -227,6 +233,8 @@ class ChangePasswordView(View):
 
 class UpdateProfileInfoView(View):
     def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/')
         user = request.user
 
         change_pass_form = ChangePasswordForm(user)

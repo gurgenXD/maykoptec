@@ -32,6 +32,8 @@ def send_pdf(request, new_req):
 class ProfileRequestView(View):
     def get(self, request):
         user = request.user
+        if not user.is_authenticated:
+            return redirect('/')
         reqs = ReqApp.objects.filter(user=user)
 
         context = {
@@ -43,6 +45,8 @@ class ProfileRequestView(View):
 
 class CreateRequestView(View):
     def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/')
         create_req_form = ReqForm()
         doc_list = Index.objects.first().file
 
@@ -54,6 +58,8 @@ class CreateRequestView(View):
         return render(request, 'requests/create-request.html', context)
 
     def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/')
         user = request.user
         create_req_form = ReqForm(request.POST, request.FILES)
         doc_list = Index.objects.first().file
@@ -86,6 +92,8 @@ class CreateRequestView(View):
 
 class UpdateRequestView(View):
     def get(self, request, req_id):
+        if not request.user.is_authenticated:
+            return redirect('/')
         user = request.user
         req = get_object_or_404(ReqApp, id=req_id)
 
@@ -127,6 +135,8 @@ class UpdateRequestView(View):
         return render(request, 'requests/update-request.html', context)
 
     def post(self, request, req_id):
+        if not request.user.is_authenticated:
+            return redirect('/')
         user = request.user
         req = get_object_or_404(ReqApp, id=req_id)
         updated = False
@@ -176,6 +186,8 @@ class UpdateRequestView(View):
 
 class AddChatMessage(View):
     def post(self, request, req_id):
+        if not request.user.is_authenticated:
+            return redirect('/')
         user = request.user
         req = get_object_or_404(ReqApp, id=req_id)
 
