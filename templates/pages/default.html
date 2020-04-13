@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>{{ page.seo_title }}</title>
+<meta name="description" content="{{ page.seo_desc }}">
+<meta name="keywords" content="{{ page.seo_kwrds }}"> 
+{% endblock %}
+
+{% block content %}
+<main role="main">
+    <article>
+        <div class="subheader pb-4">
+            <div class="container pt-5">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item small mb-0"><a href="{% url 'index' %}">Главная</a></li>
+                    {% if page.parent %}
+                    <li class="breadcrumb-item small mb-0"><a href="{% url 'drop_menu' page.parent.slug %}">О нас</a></li>
+                    {% endif %}
+                </ol>
+                <h1 class="page-header title-after text-white pb-4">{{ page.title }}</h1>
+            </div>
+        </div>
+
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-8 mb-5 mb-lg-0">
+                    <article>
+                        {{ page.body1|safe }}
+
+                        {% for quote in page.quotes.all %}
+                        <blockquote class="blockquote">
+                            <p>{{ quote.text|striptags }}</p>
+                            <footer class="blockquote-footer d-flex justify-content-start align-items-center">
+                                <img src="{{ quote.image_small.url }}" class="mr-3">
+                                <div>
+                                    <span class="d-block font-weight-bold">{{ quote.author }}</span>
+                                    <small class="text-muted font-italic">{{ quote.profession }}</small>
+                                </div>
+                            </footer>
+                        </blockquote>
+                        {% endfor %}
+                        
+                        {% for video in page.videos.all %}
+                        <div class="embed-video pb-4 ">
+                            <div class="embed-responsive embed-responsive-16by9 mb-4">
+                                <iframe class="embed-responsive-item" src="{{ video.video_link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <small class="text-muted d-block mt-n3">
+                                YouTube-канал <a href="{{ video.channel_link }}" target="_blank">Set Up</a>
+                            </small>
+                        </div>
+                        {% endfor %}
+
+                        {{ page.body2|safe }}
+                        
+                        {% for image in page.images.all %}
+                        <div class="pb-4">
+                            <div class="photo-swipe" itemscope itemtype="http://schema.org/ImageGallery">
+                                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="mb-4">
+                                    <a href="{{ image.image.url }}" itemprop="contentUrl" data-size="1920x1080">
+                                        <img src="{{ image.image_standart.url }}" itemprop="thumbnail" alt="...">
+                                    </a>
+                                    <figcaption itemprop="caption description" class="d-none">Информация об изображении, если нужно</figcaption>
+                                </figure>
+                            </div>
+                            <!-- <small class="text-muted d-block mt-n3">
+                                Источник: <a href="" target="_blank">unsplash.com</a>
+                            </small> -->
+                        </div>
+                        {% endfor %}
+
+                        {{ page.body3|safe }}
+
+                        {% for doc in page.documents.all %}
+                            <a href="{{ doc.document.url }}" target="_blank" class="d-block mb-2">{{ doc.title|striptags }}</a>
+                        {% endfor %}
+                    </article>
+                </div>
+
+                {% include '__right-menu.html' %}
+            </div>
+        </div>
+    </article>
+</main>
+{% endblock %}

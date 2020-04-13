@@ -22,24 +22,27 @@
 
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto ml-n3">
-                {% for menu_item in menu %}
-                    {% if menu_item.sub_pages %}
+                {% for page_item in pages %}
+                    {% if page_item.action == 'dropdown' %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ menu_item.title }}<i class="fas fa-chevron-down fa-xs ml-2"></i>
+                            {{ page_item.title }}<i class="fas fa-chevron-down fa-xs ml-2"></i>
                         </a>
                         <div class="dropdown-menu">
-                            {% for item in menu_item.sub_pages %}
-                            <a class="dropdown-item" href="{{ item.url }}">{{ item.title }}</a>
+                            {% for item in page_item.sub_pages %}
+                                {% if item.action == 'pages' %}
+                                <a class="dropdown-item" href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                                {% else %}
+                                <a class="dropdown-item" href="/{{ item.action }}/">{{ item.title }}</a>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </li>
-                    {% else %}
-                        {% if not menu_item.parent %}
+                    {% endif %}
+                    {% if not page_item.parent and page_item.action != 'dropdown' %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ menu_item.url }}">{{ menu_item.title }}</a>
+                            <a class="nav-link" href="{{ page_item.get_absolute_url }}">{{ page_item.title }}</a>
                         </li>
-                        {% endif %}
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -84,24 +87,27 @@
                         {% endif %}
                     </li>
 
-                    {% for menu_item in menu %}
-                        {% if menu_item.sub_pages %}
+                    {% for page_item in pages %}
+                        {% if page_item.action == 'dropdown' %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ menu_item.title }}<i class="fas fa-chevron-down fa-xs ml-2"></i>
+                                {{ page_item.title }}<i class="fas fa-chevron-down fa-xs ml-2"></i>
                             </a>
                             <div class="dropdown-menu">
-                                {% for item in menu_item.sub_pages %}
-                                <a class="dropdown-item" href="{{ item.url }}">{{ item.title }}</a>
+                                {% for item in page_item.sub_pages %}
+                                    {% if item.action == 'pages' %}
+                                    <a class="dropdown-item" href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                                    {% else %}
+                                    <a class="dropdown-item" href="/{{ item.action }}/">{{ item.title }}</a>
+                                    {% endif %}
                                 {% endfor %}
                             </div>
                         </li>
-                        {% else %}
-                            {% if not menu_item.parent %}
+                        {% endif %}
+                        {% if not page_item.parent and page_item.action != 'dropdown' %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ menu_item.url }}">{{ menu_item.title }}</a>
+                                <a class="nav-link" href="{{ page_item.get_absolute_url }}">{{ page_item.title }}</a>
                             </li>
-                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </ul>

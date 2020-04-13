@@ -12,7 +12,7 @@ class ContactsView(View):
         emails = Email.objects.all()
         schedule = Schedule.objects.all()
         map_code = MapCode.objects.filter(map_type='contacts').first()
-        parent = Page.objects.get(url='/contacts/').parent
+        parent = Page.objects.get(action='contacts').parent
 
         context = {
             'addresses': addresses,
@@ -30,7 +30,7 @@ class ActivityAreaView(View):
     def get(self, request):
         areas = ActivityArea.objects.all()
         map_code = MapCode.objects.filter(map_type='area').first()
-        parent = Page.objects.get(url='/contacts/activity-area/').parent
+        parent = Page.objects.get(action='activity_area').parent
 
         context = {
             'areas': areas,

@@ -4,25 +4,31 @@
     <div class="container">
         <div class="row mb-5">
             <div class="col-lg-3 col-md-6">
-                {% for item in footer_menu %}
-                    {% if item.parent.url == '/drop-menu/about/' %}
-                    <a href="{{ item.url }}" title="" class="d-block smaller text-muted mb-1">{{ item.title }}</a>
+                {% for item in footer_menu|slice:":4" %}
+                    {% if item.action == 'pages' %}
+                    <a class="d-block smaller text-muted mb-1" href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                    {% else %}
+                    <a class="d-block smaller text-muted mb-1" href="/{{ item.action }}/">{{ item.title }}</a>
                     {% endif %}
                 {% endfor %}
             </div>
 
             <div class="col-lg-3 col-md-6">
-                {% for item in footer_menu %}
-                    {% if item.parent.url == '/drop-menu/consumers/' %}
-                    <a href="{{ item.url }}" title="" class="d-block smaller text-muted mb-1">{{ item.title }}</a>
+                {% for item in footer_menu|slice:"4:7" %}
+                    {% if item.action == 'pages' %}
+                    <a class="d-block smaller text-muted mb-1" href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                    {% else %}
+                    <a class="d-block smaller text-muted mb-1" href="/{{ item.action }}/">{{ item.title }}</a>
                     {% endif %}
                 {% endfor %}
             </div>
 
             <div class="col-lg-3 col-md-6">
-                {% for item in footer_menu %}
-                    {% if not item.parent and not item.sub_pages %}
-                    <a href="{{ item.url }}" title="" class="d-block smaller text-muted mb-1">{{ item.title }}</a>
+                {% for item in footer_menu|slice:"7:" %}
+                    {% if item.action == 'pages' %}
+                    <a class="d-block smaller text-muted mb-1" href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                    {% else %}
+                    <a class="d-block smaller text-muted mb-1" href="/{{ item.action }}/">{{ item.title }}</a>
                     {% endif %}
                 {% endfor %}
             </div>

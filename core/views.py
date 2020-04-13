@@ -50,18 +50,9 @@ class CalcView(View):
 
 class DropMenuView(View):
     def get(self, request, drop_menu):
-        drop_page = Page.objects.filter(url__icontains=drop_menu, parent=None).first()
-
-        if not drop_page:
-            raise Http404('Страница не найдена')
-
-        pages = Page.objects.filter(parent=drop_page)
-
-        if not pages:
-            raise Http404('Страница не найдена')
+        drop_page = get_object_or_404(Page, slug=drop_menu)
 
         context = {
-            'pages': pages,
             'drop_page': drop_page,
         }
         return render(request, 'core/drop_menu.html', context)

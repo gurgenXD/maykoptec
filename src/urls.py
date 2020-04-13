@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from filebrowser.sites import site
+from contacts.views import *
 
 
 admin.site.site_header = 'Майкопская ТЭЦ'
@@ -28,12 +29,14 @@ urlpatterns = [
     path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
-    path('contacts/', include('contacts.urls')),
     path('feedback/', include('feedback.urls')),
     path('news/', include('news.urls')),
     path('users/', include('users.urls')),
-    path('documents/', include('documents.urls')),
     path('requests/', include('apps.urls')),
+    path('pages/', include('pages.urls')),
+
+    path('contacts/', ContactsView.as_view(), name='contacts'),
+    path('activity_area/', ActivityAreaView.as_view(), name='activity_area'),
 ]
 
 if settings.DEBUG:

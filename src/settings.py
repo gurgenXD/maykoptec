@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'django.contrib.flatpages',
     'mptt',
     'django_mptt_admin',
 
@@ -52,7 +51,6 @@ INSTALLED_APPS = [
     'core',
     'users',
     'pages',
-    'documents',
     'apps',
 ]
 
@@ -64,7 +62,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
 
 ROOT_URLCONF = 'src.urls'
@@ -151,6 +148,6 @@ DIRECTORY = ''
 
 EMAIL_BACKEND = 'core.email_backend.EmailBackend'
 
-GOOGLE_RECAPTCHA_SECRET_KEY = '6LcNnpAUAAAAAP8zDEOl2Erhj2F9bMPOjQza78Hb'
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LfiMekUAAAAAO7i9Yd7OWfSdEU6K0TECxPQB1Er'
 
 AUTH_USER_MODEL = 'users.User'

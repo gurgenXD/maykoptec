@@ -12,7 +12,7 @@
         <div class="container pt-5">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item small mb-0"><a href="{% url 'index' %}">Главная</a></li>
-                <li class="breadcrumb-item small mb-0"><a href="{{ parent.url }}">О нас</a></li>
+                <li class="breadcrumb-item small mb-0"><a href="{% url 'drop_menu' parent.slug %}">О нас</a></li>
             </ol>
             <h1 class="page-header title-after text-white pb-4">Новости</h1>
         </div>

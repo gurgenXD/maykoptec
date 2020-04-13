@@ -10,7 +10,8 @@ def context_info(request):
 
     seo_titles = TitleTag.objects.filter(url=request.path).first()
 
-    menu = Page.objects.filter(is_active=True)
+    pages = Page.objects.filter(is_active=True)
+
     try:
         main_phone = Index.objects.first().phone
     except:
@@ -23,7 +24,7 @@ def context_info(request):
         'is_form': is_form,
         'es_form': es_form,
         'seo_titles': seo_titles,
-        'menu': menu,
+        'pages': pages,
         'main_phone': main_phone,
         'footer_menu': footer_menu,
     }

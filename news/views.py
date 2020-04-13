@@ -7,7 +7,7 @@ from pages.models import Page
 class NewsView(View):
     def get(self, request):
         news = News.objects.filter(is_active=True)
-        parent = Page.objects.get(url='/news/').parent
+        parent = Page.objects.get(action='news').parent
 
         context = {
             'news': news,
@@ -19,7 +19,7 @@ class NewsView(View):
 class NewsDetailView(View):
     def get(self, request, news_slug):
         news_item = get_object_or_404(News, slug=news_slug)
-        parent = Page.objects.get(url='/news/').parent
+        parent = Page.objects.get(action='news').parent
 
         context = {
             'news_item': news_item,
