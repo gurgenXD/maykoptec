@@ -17,11 +17,11 @@ class PageImageInline(admin.TabularInline):
     classes = ('grp-collapse grp-closed',)
 
 
-class PageQuoteInline(admin.TabularInline):
-    model = PageQuote
-    extra = 1
-    fields = ('image', 'text', 'author', 'profession')
-    classes = ('grp-collapse grp-closed',)
+#class PageQuoteInline(admin.TabularInline):
+#    model = PageQuote
+#    extra = 1
+#    fields = ('image', 'text', 'author', 'profession')
+#    classes = ('grp-collapse grp-closed',)
 
 
 class PageVideoInline(admin.TabularInline):
@@ -57,4 +57,4 @@ class PageAdmin(DjangoMpttAdmin):
         js = ('/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
               '/static/grappelli/tinymce_setup/tinymce_setup.js')
 
-    inlines = (PageDocumentInline, PageQuoteInline, PageVideoInline, PageImageInline)
+    inlines = (PageDocumentInline, PageVideoInline, PageImageInline)
