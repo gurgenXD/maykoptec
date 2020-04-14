@@ -17,11 +17,11 @@ class PageImageInline(admin.TabularInline):
     classes = ('grp-collapse grp-closed',)
 
 
-class PageQuoteInline(admin.TabularInline):
-    model = PageQuote
-    extra = 1
-    fields = ('image', 'text', 'author', 'profession')
-    classes = ('grp-collapse grp-closed',)
+#class PageQuoteInline(admin.TabularInline):
+#    model = PageQuote
+#    extra = 1
+#    fields = ('image', 'text', 'author', 'profession')
+#    classes = ('grp-collapse grp-closed',)
 
 
 class PageVideoInline(admin.TabularInline):
