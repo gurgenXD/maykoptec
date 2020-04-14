@@ -81,7 +81,7 @@ class PageDocument(models.Model):
         filename = '{0}.{1}'.format(uuid1(), ext)
         return 'documents/pages/{0}/{1}'.format(self.page.slug, filename)
 
-    document = models.FileField(upload_to=get_document_url, verbose_name='Документ')
+    document = models.FileField(max_length=500, upload_to=get_document_url, verbose_name='Документ')
 
     def __str__(self):
         return self.title
