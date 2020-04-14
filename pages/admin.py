@@ -57,4 +57,4 @@ class PageAdmin(DjangoMpttAdmin):
         js = ('/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
               '/static/grappelli/tinymce_setup/tinymce_setup.js')
 
-    inlines = (PageDocumentInline, PageQuoteInline, PageVideoInline, PageImageInline)
+    inlines = (PageDocumentInline, PageVideoInline, PageImageInline)
