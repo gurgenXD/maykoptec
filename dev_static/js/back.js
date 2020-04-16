@@ -37,7 +37,7 @@ $(document).ready(function() {
                 data: data,
                 success: function(data) {
                     if (data.success) {
-                        window.location.replace(`http://${data.domain}/users/profile/`);
+                        window.location.replace(`http://${data.domain}/requests/profile/`);
                     } else {
                         $('#login-alert').append(`
                             <div class="alert alert-danger alert-dismissible small fade show" role="alert">

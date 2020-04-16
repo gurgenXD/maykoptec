@@ -83,7 +83,7 @@
                     <h2 class="h4 mb-4">Паспорт</h2>
 
                     <div class="form-label-group smaller mb-4">
-                        {{ individual_form.p_series_number }}
+                        {{ individual_form.series_number }}
                         <label class="bg-white">Серия и номер</label>
 
                         <div class="invalid-feedback">
@@ -92,7 +92,7 @@
                     </div>
 
                     <div class="form-label-group smaller mb-4">
-                        {{ individual_form.p_issue_date }}
+                        {{ individual_form.issue_date }}
                         <label class="bg-white">Дата выдачи</label>
 
                         <div class="invalid-feedback">
@@ -101,7 +101,7 @@
                     </div>
 
                     <div class="form-label-group smaller mb-4">
-                        {{ individual_form.p_issued_by }}
+                        {{ individual_form.issued_by }}
                         <label class="bg-white">Кем выдан</label>
 
                         <div class="invalid-feedback">
@@ -110,7 +110,7 @@
                     </div>
 
                     <div class="form-label-group smaller mb-4">
-                        {{ individual_form.p_address }}
+                        {{ individual_form.address }}
                         <label class="bg-white">Адрес прописки</label>
 
                         <div class="invalid-feedback">
@@ -119,69 +119,12 @@
                     </div>
 
                     <div class="form-label-group smaller mb-4">
-                        {{ individual_form.p_address_fact }}
+                        {{ individual_form.address_fact }}
                         <label class="bg-white">Адрес фактического проживания</label>
 
                         <div class="invalid-feedback">
                             Это обязательное поле
                         </div>
-                    </div>
-
-                    <h2 class="h4 mb-4">Водительское удостоверение</h2>
-
-                    <div class="form-label-group smaller mb-4">
-                        {{ individual_form.v_number }}
-                        <label class="bg-white">Номер</label>
-
-                        <div class="invalid-feedback">
-                            Это обязательное поле
-                        </div>
-                    </div>
-
-                    <div class="form-label-group smaller mb-4">
-                        {{ individual_form.v_code }}
-                        <label class="bg-white">Код подразделения</label>
-
-                        <div class="invalid-feedback">
-                            Это обязательное поле
-                        </div>
-                    </div>
-
-                    <div class="form-label-group smaller mb-4">
-                        {{ individual_form.v_issue_date }}
-                        <label class="bg-white">Дата выдачи</label>
-
-                        <div class="invalid-feedback">
-                            Это обязательное поле
-                        </div>
-                    </div>
-
-                    <div class="form-label-group smaller mb-4">
-                        {{ individual_form.v_end_date }}
-                        <label class="bg-white">Дата окончания действия</label>
-
-                        <div class="invalid-feedback">
-                            Это обязательное поле
-                        </div>
-                    </div>
-
-                    <div class="form-label-group smaller mb-4">
-                        {{ individual_form.v_region }}
-                        <label class="bg-white">Регион</label>
-
-                        <div class="invalid-feedback">
-                            Это обязательное поле
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <span class="mr-3 d-block mb-2">Категория:</span>
-                        {% for item in individual_form.CheckGroup %}
-                            <div class="custom-control custom-checkbox custom-control-inline">
-                                {{ item.tag }}
-                                <label class="custom-control-label" for="{{ item.id_for_label }}">{{ item.choice_label }}</label>
-                            </div>
-                        {% endfor %}
                     </div>
 
                     <button class="btn btn-primary btn-lg" type="submit">Сохранить изменения</button>
