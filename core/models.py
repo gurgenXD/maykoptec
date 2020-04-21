@@ -82,7 +82,7 @@ class Index(models.Model):
     title = models.CharField(max_length=250, verbose_name='Заголовок')
     title_text = models.TextField(verbose_name='Текст под заголовком')
     about = models.TextField(verbose_name='О нас')
-    phone = models.ForeignKey(Phone, on_delete=models.CASCADE, verbose_name='Телефон в меню')
+    phone = models.ForeignKey(Phone, on_delete=models.CASCADE, verbose_name='Телефон в меню', null=True, blank=True)
     koef = models.DecimalField('Коэффициет калькулятора', max_digits=11, decimal_places=2)
     file = models.FileField('Список документов', upload_to='doc_list/', max_length=150)
 

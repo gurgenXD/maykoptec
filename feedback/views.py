@@ -1,5 +1,5 @@
 from django.views import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -20,6 +20,8 @@ class FeedBackView(View):
                 user_info = user.entity
             if user.user_type == 'businessman':
                 user_info = user.businessman
+        else:
+            return redirect('/')
 
         if user_info:
             feedback_form = FeedBackForm(initial={

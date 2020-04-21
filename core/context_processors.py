@@ -15,7 +15,7 @@ def context_info(request):
     try:
         main_phone = Index.objects.first().phone
     except:
-        main_phone = None
+        main_phone = ''
 
     footer_menu = Page.objects.filter(in_footer=True)
 

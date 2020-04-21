@@ -12,18 +12,24 @@ class Address(models.Model):
         return self.value
 
 
-class Phone(models.Model):
-    PHONE_TYPES = [
-        ('customers', 'Центр ослуживания клиентов'),
-        ('dispatch', 'Оперативно диспетчерская служба'),
-    ]
+class PhoneType(models.Model):
+    phone_type = models.CharField(max_length=250, verbose_name='Тип телефона')
 
-    phone_type = models.CharField(max_length=250, choices=PHONE_TYPES, verbose_name='Тип телефона')
+    class Meta:
+        verbose_name = 'Тип телефона'
+        verbose_name_plural = 'Телефоны'
+
+    def __str__(self):
+        return self.phone_type
+
+
+class Phone(models.Model):
+    ptype = models.ForeignKey(PhoneType, on_delete=models.CASCADE, related_name='phones', verbose_name='Тип телефона')
     value = models.CharField(max_length=20, verbose_name='Телефон')
 
     class Meta:
         verbose_name = 'Телефон'
-        verbose_name_plural = 'Телефоны'
+        verbose_name_plural = 'Список телефонов'
 
     def __str__(self):
         return self.value
