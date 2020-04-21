@@ -135,7 +135,7 @@
                         {% for pt in ptypes %}
                         <div class="mb-5">
                             <span class="d-block mb-2 text-light smaller">{{ pt.phone_type }}</span>
-                            {% for item in phones_customers %}
+                            {% for item in pt.phones.all %}
                             <a href="tel:+{{ item.value|only_digits }}" title="" class="d-block h5 mb-2 text-white"><span class="text-primary mr-2">{{ item.value|phone_code }}</span>{{  item.value|phone_nmb }}</a>
                             {% endfor %}
                         </div>
