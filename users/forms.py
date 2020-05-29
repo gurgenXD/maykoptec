@@ -100,9 +100,29 @@ class IndividualSignUpForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
+
+        def check_snils(snils):
+            if len(snils) != 14:
+                return False
+
+            k = range(9, 0, -1)
+            pairs = zip(k, [int(x) for x in snils.replace('-', '').replace(' ', '')[:-2]])
+            csum = sum([k * v for k, v in pairs])
+
+            while csum > 101:
+                csum %= 101
+            if csum in (100, 101):
+                csum = 0
+
+            return csum == int(snils[-2:])
+
+        if not check_snils(username):
+            raise forms.ValidationError('Укажите правильный СНИЛС')
+
         username = re.sub(r'\D', '', username)
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError('Пользователь с таким логином уже существует')
+
         return username
 
     def clean_email(self):
@@ -193,6 +213,19 @@ class EntitySignUpForm(BaseEntitySignUpForm):
     def clean_username(self):
         username = self.cleaned_data.get('username')
         username = re.sub(r'\D', '', username)
+
+        def check_ogrn(ogrn):
+            if len(ogrn) != 13:
+                return False
+
+            nmb = int(ogrn[:-1])
+            csum = int(ogrn[-1])
+
+            return nmb % 11 % 10 == csum
+
+        if not check_ogrn(username):
+            raise forms.ValidationError('Укажите правильный ОГРН')
+
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError('Пользователь с таким логином уже существует')
         return username
@@ -236,6 +269,19 @@ class BusinessManSignUpForm(BaseEntitySignUpForm):
     def clean_username(self):
         username = self.cleaned_data.get('username')
         username = re.sub(r'\D', '', username)
+
+        def check_ogrn(ogrn):
+            if len(ogrn) != 15:
+                return False
+
+            nmb = int(ogrn[:-1])
+            csum = int(ogrn[-1])
+
+            return nmb % 13 % 10 == csum
+
+        if not check_ogrn(username):
+            raise forms.ValidationError('Укажите правильный ОГРНИП')
+
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError('Пользователь с таким логином уже существует')
         return username

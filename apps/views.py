@@ -26,6 +26,8 @@ def send_pdf(request, new_req):
     from_email = MailFromString.objects.first().host_user
     email = EmailMessage(mail_subject, message, from_email=from_email, to=to_email)
     email.attach_file(new_req.pdf.path)
+    for item in new_req.documents.all():
+        email.attach_file(item.document.path)
     email.send()
 
 
