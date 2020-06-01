@@ -220,7 +220,25 @@ $('.custom-file-input').on('change',function(){
 $(document).ready(function(){
     var i=1;
     $("#add_custom_doc").click(function(){
-        $('#custom_doc'+i).html('<div class="mb-5"><span class="smaller d-block mb-2">Название документа</span><div class="input-group mb-2"><div class="custom-file"><input type="file" class="custom-file-input" accept=".jpg, .jpeg, .png, .bmp, .gif, .tiff, .pdf"><label class="custom-file-label bg-light">Прикрепить файл</label></div></div><span class="d-block small text-muted mb-1">Поддерживаются файлы форматов: jpg, png, bmp, gif, tiff, pdf</span><span class="d-block small text-muted mb-4">Максимальный размер файла: 5 Мб</span></div>');
+        $('#custom_doc'+i).html(`
+            <div class="mb-5">
+                <div class="form-label-group smaller mb-3">
+                    <input type="text" class="form-control" name="doc_'+i+'_name" placeholder="Название документа" required>
+                    <label class="bg-light">Название документа</label>
+                    <div class="invalid-feedback">
+                        Это обязательное поле
+                    </div>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="custom-file">
+                        <input type="file" name="doc_'+i+'" class="custom-file-input" accept=".jpg, .jpeg, .png, .bmp, .gif, .tiff, .pdf">
+                        <label class="custom-file-label bg-light">Прикрепить файл</label>
+                    </div>
+                </div>
+                <span class="d-block small text-muted mb-1">Поддерживаются файлы форматов: jpg, png, bmp, gif, tiff, pdf</span>
+                <span class="d-block small text-muted mb-4">Максимальный размер файла: 5 Мб</span>
+            </div>
+        `);
 
         $('#custom_docs').append('<div id="custom_doc'+(i+1)+'"></div>');
         i++; 

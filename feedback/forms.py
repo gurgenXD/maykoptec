@@ -11,5 +11,5 @@ class FeedBackForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder PHONE-input': 'Контактный телефон'}),
             'email': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Электронная почта'}),
             'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Текст обращения', 'rows': 4}),
-            'doc': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+            'doc': forms.ClearableFileInput(attrs={'class': 'custom-file-input', 'accept': '.jpg, .jpeg, .png, .bmp, .gif, .tiff, .pdf'}),
         }
