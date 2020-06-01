@@ -1,7 +1,7 @@
 (function($) {
     function FooterBottom() { 
         $('body').css('margin-bottom', $('.footer').outerHeight())
-    };
+    }
 
     FooterBottom();
     window.addEventListener('resize', FooterBottom, false);  
@@ -120,7 +120,7 @@ $(document).ready(function() {
             $('.top-bar').css('margin-bottom','0');
             $('.offcanvas-collapse').removeClass('now-scrolling');
         }
-    };
+    }
 
     NavbarScroll();
     window.addEventListener('scroll', NavbarScroll, false);  
@@ -201,8 +201,8 @@ $(document).ready(function() {
                     byRow: true
                 });
             });
-        };
-    };
+        }
+    }
 
     MtchHeight();
     window.addEventListener('resize', MtchHeight, false);  
@@ -220,7 +220,7 @@ $('.custom-file-input').on('change',function(){
 $(document).ready(function(){
     var i=1;
     $("#add_custom_doc").click(function(){
-        $('#custom_doc'+i).html('<div class="mb-5"><div class="form-label-group smaller mb-3"><input type="text" name="doc_'+i+'_name" class="form-control" placeholder="Название документа" required><label class="bg-light">Название документа</label></div><div class="input-group"><div class="custom-file"><input type="file" name="doc_'+i+'" class="custom-file-input" required><label class="custom-file-label bg-light">Скан документа</label></div></div></div>');
+        $('#custom_doc'+i).html('<div class="mb-5"><span class="smaller d-block mb-2">Название документа</span><div class="input-group mb-2"><div class="custom-file"><input type="file" class="custom-file-input" accept=".jpg, .jpeg, .png, .bmp, .gif, .tiff, .pdf"><label class="custom-file-label bg-light">Прикрепить файл</label></div></div><span class="d-block small text-muted mb-1">Поддерживаются файлы форматов: jpg, png, bmp, gif, tiff, pdf</span><span class="d-block small text-muted mb-4">Максимальный размер файла: 5 Мб</span></div>');
 
         $('#custom_docs').append('<div id="custom_doc'+(i+1)+'"></div>');
         i++; 
@@ -232,4 +232,13 @@ $(document).ready(function(){
         }
     });
 
+});
+
+$(document).ready(function(){
+    $(".custom-file-input").on("change", function (e) {
+        if(this.files[0].size > 2097152){
+            $(this).next($(".custom-file-label")).html('Ваш файл превышает размер 5 Мб');
+            this.value = "";
+        }
+    });
 });
