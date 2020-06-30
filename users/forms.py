@@ -174,7 +174,7 @@ class BaseEntitySignUpForm(forms.Form):
     email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'id': 'e-email', 'class': 'form-control', 'placeholder': 'Электронная почта'}))
 
     inn = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'e-inn', 'class': 'form-control INN-input', 'placeholder': 'ИНН'}))
-    kpp = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'e-kpp', 'class': 'form-control KPP-input', 'placeholder': 'КПП'}))
+    kpp = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'e-kpp', 'class': 'form-control KPP-input', 'placeholder': 'КПП'}))
     e_address = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'e-e_address', 'class': 'form-control', 'placeholder': 'Юридический адрес'}))
     p_address = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'e-p_address', 'class': 'form-control', 'placeholder': 'Почтовый адрес'}))
 
@@ -474,7 +474,7 @@ class BusinessmanUpdateForm(forms.Form):
         self.fields['email'] = forms.EmailField(required=True, widget=forms.TextInput(attrs={'id': 'e-email', 'class': 'form-control', 'placeholder': 'Электронная почта', 'value': self.user.email}))
 
         self.fields['inn'] = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'e-inn', 'class': 'form-control INN-input', 'placeholder': 'ИНН', 'value': self.user_info.inn}))
-        self.fields['kpp'] = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'e-kpp', 'class': 'form-control KPP-input', 'placeholder': 'КПП', 'value': self.user_info.kpp}))
+        self.fields['kpp'] = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'e-kpp', 'class': 'form-control KPP-input', 'placeholder': 'КПП', 'value': self.user_info.kpp}))
         self.fields['e_address'] = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'e-e_address', 'class': 'form-control', 'placeholder': 'Юридический адрес', 'value': self.user_info.e_address}))
         self.fields['p_address'] = forms.CharField(required=True, widget=forms.TextInput(attrs={'id': 'e-p_address', 'class': 'form-control', 'placeholder': 'Почтовый адрес', 'value': self.user_info.p_address}))
 
